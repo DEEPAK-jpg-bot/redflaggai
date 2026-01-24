@@ -14,7 +14,144 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          company_name: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          monthly_scan_limit: number
+          scans_used_this_month: number
+          stripe_customer_id: string | null
+          subscription_ends_at: string | null
+          subscription_plan: Database["public"]["Enums"]["subscription_plan"]
+          subscription_started_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          company_name?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          monthly_scan_limit?: number
+          scans_used_this_month?: number
+          stripe_customer_id?: string | null
+          subscription_ends_at?: string | null
+          subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
+          subscription_started_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          monthly_scan_limit?: number
+          scans_used_this_month?: number
+          stripe_customer_id?: string | null
+          subscription_ends_at?: string | null
+          subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
+          subscription_started_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scans: {
+        Row: {
+          asking_price: number
+          bank_data: Json | null
+          company_name: string
+          completed_at: string | null
+          created_at: string
+          customer_churn: Json | null
+          ebitda_bridge: Json | null
+          id: string
+          industry: string
+          ledger_data: Json | null
+          personal_expenses: Json | null
+          revenue_analysis: Json | null
+          risk_level: Database["public"]["Enums"]["risk_level"] | null
+          risk_score: number | null
+          status: Database["public"]["Enums"]["scan_status"]
+          user_id: string
+        }
+        Insert: {
+          asking_price?: number
+          bank_data?: Json | null
+          company_name: string
+          completed_at?: string | null
+          created_at?: string
+          customer_churn?: Json | null
+          ebitda_bridge?: Json | null
+          id?: string
+          industry: string
+          ledger_data?: Json | null
+          personal_expenses?: Json | null
+          revenue_analysis?: Json | null
+          risk_level?: Database["public"]["Enums"]["risk_level"] | null
+          risk_score?: number | null
+          status?: Database["public"]["Enums"]["scan_status"]
+          user_id: string
+        }
+        Update: {
+          asking_price?: number
+          bank_data?: Json | null
+          company_name?: string
+          completed_at?: string | null
+          created_at?: string
+          customer_churn?: Json | null
+          ebitda_bridge?: Json | null
+          id?: string
+          industry?: string
+          ledger_data?: Json | null
+          personal_expenses?: Json | null
+          revenue_analysis?: Json | null
+          risk_level?: Database["public"]["Enums"]["risk_level"] | null
+          risk_score?: number | null
+          status?: Database["public"]["Enums"]["scan_status"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      subscription_events: {
+        Row: {
+          amount_cents: number | null
+          created_at: string
+          event_type: string
+          id: string
+          plan: Database["public"]["Enums"]["subscription_plan"] | null
+          stripe_event_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_cents?: number | null
+          created_at?: string
+          event_type: string
+          id?: string
+          plan?: Database["public"]["Enums"]["subscription_plan"] | null
+          stripe_event_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          plan?: Database["public"]["Enums"]["subscription_plan"] | null
+          stripe_event_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +160,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      risk_level: "low" | "medium" | "high"
+      scan_status: "pending" | "processing" | "completed" | "failed"
+      subscription_plan: "free" | "hunter" | "firm"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +289,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      risk_level: ["low", "medium", "high"],
+      scan_status: ["pending", "processing", "completed", "failed"],
+      subscription_plan: ["free", "hunter", "firm"],
+    },
   },
 } as const
