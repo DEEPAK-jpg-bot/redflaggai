@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Progress } from '@/components/ui/progress';
 import { Upload, FileText, Sparkles, CheckCircle, Loader2 } from 'lucide-react';
 import { useScan } from '@/contexts/ScanContext';
-import { DEMO_COMPANY } from '@/lib/mockData';
+import { DEMO_COMPANY, generateLedgerEntries, generateBankTransactions } from '@/lib/mockData';
 
 const INDUSTRIES = ['Wholesale Distribution', 'IT Services', 'Home Services', 'Manufacturing', 'Retail', 'Healthcare', 'SaaS', 'Professional Services'];
 
@@ -30,6 +30,7 @@ const NewScan: React.FC = () => {
   const [askingPrice, setAskingPrice] = useState('');
   const [processingStep, setProcessingStep] = useState(0);
   const [scanId, setScanId] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   
   const { createScan, completeScan } = useScan();
   const navigate = useNavigate();
@@ -40,22 +41,37 @@ const NewScan: React.FC = () => {
     setAskingPrice(DEMO_COMPANY.askingPrice.toString());
   };
 
-  const handleStartProcessing = () => {
-    const scan = createScan(companyName, industry, Number(askingPrice));
-    setScanId(scan.id);
+  const handleStartProcessing = async () => {
+    setIsProcessing(true);
     setStep(3);
     
-    // Simulate processing steps
-    let currentStep = 0;
-    const interval = setInterval(() => {
-      currentStep++;
-      setProcessingStep(currentStep);
-      if (currentStep >= PROCESSING_STEPS.length) {
-        clearInterval(interval);
-        completeScan(scan.id);
-        setTimeout(() => navigate(`/scan/${scan.id}/report`), 500);
-      }
-    }, 800);
+    try {
+      // Generate demo data
+      const ledgerData = generateLedgerEntries();
+      const bankData = generateBankTransactions();
+      
+      // Create the scan
+      const scan = await createScan(companyName, industry, Number(askingPrice), ledgerData, bankData);
+      setScanId(scan.id);
+      
+      // Simulate processing steps
+      let currentStep = 0;
+      const interval = setInterval(async () => {
+        currentStep++;
+        setProcessingStep(currentStep);
+        if (currentStep >= PROCESSING_STEPS.length) {
+          clearInterval(interval);
+          
+          // Complete the scan with analysis
+          await completeScan(scan.id, ledgerData, bankData);
+          
+          setTimeout(() => navigate(`/scan/${scan.id}/report`), 500);
+        }
+      }, 800);
+    } catch (error) {
+      console.error('Error processing scan:', error);
+      setIsProcessing(false);
+    }
   };
 
   const progress = (processingStep / PROCESSING_STEPS.length) * 100;
@@ -128,8 +144,8 @@ const NewScan: React.FC = () => {
               </div>
               <div className="flex gap-2 pt-4">
                 <Button variant="outline" onClick={() => setStep(1)}>Back</Button>
-                <Button onClick={handleStartProcessing}>Analyze Files</Button>
-                <Button variant="secondary" onClick={handleStartProcessing}><Sparkles className="mr-2 h-4 w-4" />Use Demo Data</Button>
+                <Button onClick={handleStartProcessing} disabled={isProcessing}>Analyze Files</Button>
+                <Button variant="secondary" onClick={handleStartProcessing} disabled={isProcessing}><Sparkles className="mr-2 h-4 w-4" />Use Demo Data</Button>
               </div>
             </CardContent>
           </Card>

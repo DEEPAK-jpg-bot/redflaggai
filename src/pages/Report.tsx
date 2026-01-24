@@ -1,22 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowLeft, Download, AlertTriangle, TrendingDown, DollarSign } from 'lucide-react';
+import { ArrowLeft, Download, AlertTriangle, TrendingDown, DollarSign, Loader2 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useScan } from '@/contexts/ScanContext';
 import { formatCurrency, formatPercentage } from '@/lib/analysisEngine';
 import PricingModal from '@/components/PricingModal';
+import { QoEReport } from '@/types';
 
 const Report: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { getReport } = useScan();
   const [showPricing, setShowPricing] = useState(false);
-  
-  const report = getReport(id || '');
+  const [report, setReport] = useState<QoEReport | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadReport = async () => {
+      if (!id) return;
+      setIsLoading(true);
+      const reportData = await getReport(id);
+      setReport(reportData);
+      setIsLoading(false);
+    };
+    loadReport();
+  }, [id, getReport]);
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   if (!report) {
     return (

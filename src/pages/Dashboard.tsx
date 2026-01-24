@@ -18,8 +18,10 @@ import { useScan } from '@/contexts/ScanContext';
 import { formatCurrency } from '@/lib/analysisEngine';
 
 const Dashboard: React.FC = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { scans } = useScan();
+
+  const displayName = profile?.full_name || user?.email?.split('@')[0] || 'User';
 
   const completedScans = scans.filter(s => s.status === 'completed');
   const avgRiskScore = completedScans.length > 0 
@@ -41,7 +43,7 @@ const Dashboard: React.FC = () => {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground">
-              Welcome back, {user?.name?.split(' ')[0]}
+              Welcome back, {displayName.split(' ')[0]}
             </h1>
             <p className="text-muted-foreground">
               Here's an overview of your due diligence activity.
