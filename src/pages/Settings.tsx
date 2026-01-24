@@ -1,14 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const Settings: React.FC = () => {
-  const { user } = useAuth();
+  const { user, profile, subscription, session } = useAuth();
+  const [isManagingSubscription, setIsManagingSubscription] = useState(false);
+
+  const displayName = profile?.full_name || user?.email?.split('@')[0] || '';
+
+  const handleManageSubscription = async () => {
+    if (!session) return;
+    
+    setIsManagingSubscription(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error('Error opening customer portal:', error);
+      toast.error('Failed to open subscription management');
+    } finally {
+      setIsManagingSubscription(false);
+    }
+  };
+
+  const getPlanBadge = () => {
+    switch (subscription.plan) {
+      case 'hunter':
+        return <Badge className="bg-primary text-primary-foreground">Hunter Plan</Badge>;
+      case 'firm':
+        return <Badge className="bg-primary text-primary-foreground">Firm Plan</Badge>;
+      default:
+        return <Badge variant="secondary">Free Plan</Badge>;
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -19,6 +60,40 @@ const Settings: React.FC = () => {
         </div>
 
         <div className="grid gap-6">
+          {/* Subscription Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                Subscription
+                {getPlanBadge()}
+              </CardTitle>
+              <CardDescription>Manage your subscription and billing</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">Current Plan</p>
+                  <p className="text-sm text-muted-foreground capitalize">{subscription.plan} - {subscription.scansPerMonth} scan{subscription.scansPerMonth > 1 ? 's' : ''}/month</p>
+                </div>
+                {subscription.subscribed && (
+                  <Button 
+                    variant="outline" 
+                    onClick={handleManageSubscription}
+                    disabled={isManagingSubscription}
+                  >
+                    {isManagingSubscription && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Manage Subscription
+                  </Button>
+                )}
+              </div>
+              {subscription.subscriptionEnd && (
+                <p className="text-sm text-muted-foreground">
+                  Renews on {new Date(subscription.subscriptionEnd).toLocaleDateString()}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
@@ -28,42 +103,18 @@ const Settings: React.FC = () => {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
-                  <Input id="name" defaultValue={user?.name} />
+                  <Input id="name" defaultValue={displayName} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" defaultValue={user?.email} />
+                  <Input id="email" type="email" defaultValue={user?.email || ''} disabled />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="company">Company Name</Label>
-                <Input id="company" placeholder="Your firm or fund name" />
+                <Input id="company" defaultValue={profile?.company_name || ''} placeholder="Your firm or fund name" />
               </div>
               <Button>Save Changes</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Security</CardTitle>
-              <CardDescription>Manage your password and security settings</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="current-password">Current Password</Label>
-                <Input id="current-password" type="password" />
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="new-password">New Password</Label>
-                  <Input id="new-password" type="password" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Confirm Password</Label>
-                  <Input id="confirm-password" type="password" />
-                </div>
-              </div>
-              <Button>Update Password</Button>
             </CardContent>
           </Card>
 

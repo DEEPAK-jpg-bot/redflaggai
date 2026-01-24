@@ -35,7 +35,9 @@ const menuItems = [
 
 const AppSidebar: React.FC = () => {
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, profile, logout } = useAuth();
+
+  const displayName = profile?.full_name || user?.email?.split('@')[0] || 'User';
 
   return (
     <Sidebar className="border-r border-sidebar-border">
@@ -75,11 +77,11 @@ const AppSidebar: React.FC = () => {
         <div className="flex items-center gap-3 mb-4">
           <Avatar className="h-9 w-9">
             <AvatarFallback className="bg-sidebar-accent text-sidebar-accent-foreground">
-              {user?.name?.charAt(0).toUpperCase() || 'U'}
+              {displayName.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 truncate">
-            <p className="text-sm font-medium text-sidebar-foreground truncate">{user?.name}</p>
+            <p className="text-sm font-medium text-sidebar-foreground truncate">{displayName}</p>
             <p className="text-xs text-sidebar-foreground/60 truncate">{user?.email}</p>
           </div>
         </div>
