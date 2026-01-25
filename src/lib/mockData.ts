@@ -7,6 +7,89 @@ export const DEMO_COMPANY = {
   askingPrice: 2500000,
 };
 
+// Personal expense keywords for detection - expanded list
+export const PERSONAL_EXPENSE_KEYWORDS = [
+  // Travel & Leisure
+  'resort',
+  'vacation',
+  'cruise',
+  'disney',
+  'universal studios',
+  'theme park',
+  'ski resort',
+  'beach house',
+  'timeshare',
+  // Luxury Vehicles
+  'ferrari',
+  'porsche',
+  'lamborghini',
+  'maserati',
+  'bentley',
+  'rolls royce',
+  'yacht',
+  'boat',
+  'jet ski',
+  // Personal Services
+  'spa',
+  'salon',
+  'country club',
+  'golf club',
+  'tennis club',
+  'gym membership',
+  'personal trainer',
+  // Family Expenses
+  'family',
+  'tuition',
+  'private school',
+  'daycare',
+  'nanny',
+  'au pair',
+  'summer camp',
+  // Luxury Goods
+  'jewelry',
+  'rolex',
+  'louis vuitton',
+  'gucci',
+  'prada',
+  'hermes',
+  'tiffany',
+  'cartier',
+  // Entertainment
+  'concert',
+  'theater tickets',
+  'sports tickets',
+  'skybox',
+  'suite rental',
+  // Home & Property
+  'landscaping personal',
+  'pool service',
+  'home renovation',
+  'interior designer',
+];
+
+// Expense categories for mismatch detection
+export const EXPENSE_CATEGORIES = {
+  legitimate: [
+    'Cost of Goods Sold',
+    'Payroll',
+    'Rent',
+    'Utilities',
+    'Insurance',
+    'Professional Services',
+    'Marketing',
+    'Equipment',
+    'Supplies',
+  ],
+  suspicious: [
+    'Office Supplies', // Often used to hide personal expenses
+    'Team Building',
+    'Employee Wellness',
+    'Training & Education',
+    'Miscellaneous',
+    'Other',
+  ],
+};
+
 // Generate monthly revenue data with $100k discrepancy in December
 export const generateMonthlyRevenue = (): MonthlyRevenue[] => {
   const months = ['Jul 2024', 'Aug 2024', 'Sep 2024', 'Oct 2024', 'Nov 2024', 'Dec 2024'];
@@ -15,7 +98,7 @@ export const generateMonthlyRevenue = (): MonthlyRevenue[] => {
     const baseRevenue = 75000 + Math.random() * 20000;
     const bookedRevenue = Math.round(baseRevenue);
     
-    // December has a $100k inflation
+    // December has a $100k inflation (fraud signal)
     const inflationAmount = month === 'Dec 2024' ? 100000 : 0;
     const actualDeposits = Math.round(bookedRevenue - inflationAmount + (Math.random() * 5000 - 2500));
     
@@ -33,14 +116,14 @@ export const generateMonthlyRevenue = (): MonthlyRevenue[] => {
   });
 };
 
-// Customer data with one major churn signal
+// Customer data with churn signals
 export const generateCustomerData = (): CustomerData[] => {
   return [
     {
       name: 'Big Box Retail Co',
       month1Spend: 45000,
       month2Spend: 42000,
-      month3Spend: 18000, // 60% drop - flagged
+      month3Spend: 18000, // 60% drop - major churn signal
       trend: 'down',
       percentageChange: -60,
       flagged: true,
@@ -84,7 +167,7 @@ export const generateCustomerData = (): CustomerData[] => {
   ];
 };
 
-// Personal expenses with injected fraud
+// Personal expenses with various fraud patterns
 export const generatePersonalExpenses = (): PersonalExpense[] => {
   return [
     {
@@ -92,8 +175,8 @@ export const generatePersonalExpenses = (): PersonalExpense[] => {
       date: '2024-11-15',
       vendor: 'Walt Disney World',
       amount: 5000,
-      category: 'Office Supplies',
-      flagReason: 'Keyword: "Disney" - Likely personal vacation expense',
+      category: 'Office Supplies', // Suspicious categorization
+      flagReason: 'Keyword: "Disney" | Suspicious categorization as "Office Supplies"',
       severity: 'high',
     },
     {
@@ -111,7 +194,7 @@ export const generatePersonalExpenses = (): PersonalExpense[] => {
       vendor: 'Ritz Carlton Spa',
       amount: 850,
       category: 'Employee Wellness',
-      flagReason: 'Keyword: "Spa" - Personal wellness expense',
+      flagReason: 'Keyword: "Spa" | Luxury/personal vendor detected',
       severity: 'medium',
     },
     {
@@ -120,7 +203,7 @@ export const generatePersonalExpenses = (): PersonalExpense[] => {
       vendor: 'Private School Tuition - St. Andrews',
       amount: 12500,
       category: 'Training & Education',
-      flagReason: 'Keyword: "Tuition" - Family education expense',
+      flagReason: 'Keyword: "Tuition", "Private School" | Suspicious categorization',
       severity: 'high',
     },
     {
@@ -129,19 +212,19 @@ export const generatePersonalExpenses = (): PersonalExpense[] => {
       vendor: 'Family Vacation Resort',
       amount: 3200,
       category: 'Team Building',
-      flagReason: 'Keyword: "Family", "Resort" - Personal vacation',
+      flagReason: 'Keyword: "Family", "Resort", "Vacation" | Suspicious categorization',
       severity: 'high',
     },
   ];
 };
 
-// Ledger entries (simplified)
+// Ledger entries with embedded fraud signals
 export const generateLedgerEntries = (): LedgerEntry[] => {
   const entries: LedgerEntry[] = [];
   const months = ['2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12'];
   
   months.forEach(month => {
-    // Revenue entries
+    // Revenue entries - normal business activity
     entries.push({
       date: `${month}-15`,
       description: 'Product Sales',
@@ -157,9 +240,20 @@ export const generateLedgerEntries = (): LedgerEntry[] => {
       amount: 15000 + Math.random() * 10000,
       type: 'revenue',
     });
+
+    // December has inflated revenue (fraud)
+    if (month === '2024-12') {
+      entries.push({
+        date: `${month}-30`,
+        description: 'Year-End Sales Adjustment',
+        category: 'Revenue',
+        amount: 100000, // Fictitious revenue
+        type: 'revenue',
+      });
+    }
   });
   
-  // Add the personal expenses as expense entries
+  // Add personal expenses disguised as business expenses
   entries.push(
     { date: '2024-11-15', description: 'Walt Disney World', category: 'Office Supplies', amount: 5000, type: 'expense' },
     { date: '2024-10-22', description: 'Porsche Leasing', category: 'Vehicle Expenses', amount: 2000, type: 'expense' },
@@ -171,15 +265,16 @@ export const generateLedgerEntries = (): LedgerEntry[] => {
   return entries;
 };
 
-// Bank transactions
+// Bank transactions showing real cash movement
 export const generateBankTransactions = (): BankTransaction[] => {
   const transactions: BankTransaction[] = [];
   const months = ['2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12'];
   
   months.forEach((month, index) => {
-    // Deposits (slightly less than ledger revenue, except December which is $100k less)
+    // Deposits - slightly less than ledger revenue (normal variance)
+    // December is $100k less (exposing the fictitious revenue)
     const baseDeposit = 70000 + Math.random() * 15000;
-    const deposit = month === '2024-12' ? baseDeposit - 100000 : baseDeposit;
+    const deposit = month === '2024-12' ? baseDeposit : baseDeposit;
     
     transactions.push({
       date: `${month}-20`,
@@ -187,6 +282,12 @@ export const generateBankTransactions = (): BankTransaction[] => {
       amount: deposit,
       type: 'deposit',
     });
+
+    // December has normal deposits - the $100k "revenue" never came in as cash
+    if (month === '2024-12') {
+      // The deposit is normal, but ledger shows $100k more
+      // This creates the discrepancy that gets flagged
+    }
   });
   
   return transactions;
@@ -237,8 +338,8 @@ export const MOCK_SCANS: Scan[] = [
     askingPrice: 2500000,
     status: 'completed',
     riskScore: 65,
-    createdAt: new Date(Date.now() - 86400000 * 2), // 2 days ago
-    completedAt: new Date(Date.now() - 86400000 * 2 + 600000), // 10 minutes after creation
+    createdAt: new Date(Date.now() - 86400000 * 2),
+    completedAt: new Date(Date.now() - 86400000 * 2 + 600000),
   },
   {
     id: 'scan_002',
@@ -260,23 +361,4 @@ export const MOCK_SCANS: Scan[] = [
     createdAt: new Date(Date.now() - 86400000 * 7),
     completedAt: new Date(Date.now() - 86400000 * 7 + 600000),
   },
-];
-
-// Personal expense keywords for detection
-export const PERSONAL_EXPENSE_KEYWORDS = [
-  'resort',
-  'ferrari',
-  'tuition',
-  'disney',
-  'family',
-  'spa',
-  'porsche',
-  'vacation',
-  'lamborghini',
-  'country club',
-  'yacht',
-  'jewelry',
-  'rolex',
-  'louis vuitton',
-  'private school',
 ];
