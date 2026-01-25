@@ -6,9 +6,20 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
 import { Json } from '@/integrations/supabase/types';
 
+interface ScanLimitInfo {
+  canCreate: boolean;
+  scansUsed: number;
+  monthlyLimit: number;
+  remainingScans: number;
+  plan: string;
+  message: string;
+}
+
 interface ScanContextType {
   scans: Scan[];
   isLoading: boolean;
+  scanLimitInfo: ScanLimitInfo | null;
+  checkScanLimit: () => Promise<ScanLimitInfo>;
   createScan: (companyName: string, industry: string, askingPrice: number, ledgerData?: LedgerEntry[], bankData?: BankTransaction[]) => Promise<Scan>;
   completeScan: (scanId: string, ledgerData: LedgerEntry[], bankData: BankTransaction[]) => Promise<void>;
   getScan: (scanId: string) => Scan | undefined;
@@ -64,7 +75,37 @@ const convertDbScanToScan = (dbScan: DbScanRow): Scan => ({
 export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
   const [scans, setScans] = useState<Scan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, isAuthenticated } = useAuth();
+  const [scanLimitInfo, setScanLimitInfo] = useState<ScanLimitInfo | null>(null);
+  const { user, isAuthenticated, session } = useAuth();
+
+  const checkScanLimit = async (): Promise<ScanLimitInfo> => {
+    if (!session?.access_token) {
+      throw new Error('User not authenticated');
+    }
+
+    const { data, error } = await supabase.functions.invoke('validate-scan-limit', {
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+      },
+    });
+
+    if (error) {
+      console.error('Error checking scan limit:', error);
+      throw new Error('Failed to check scan limit');
+    }
+
+    const limitInfo: ScanLimitInfo = {
+      canCreate: data.canCreate,
+      scansUsed: data.scansUsed,
+      monthlyLimit: data.monthlyLimit,
+      remainingScans: data.remainingScans,
+      plan: data.plan,
+      message: data.message,
+    };
+
+    setScanLimitInfo(limitInfo);
+    return limitInfo;
+  };
 
   const refreshScans = async () => {
     if (!user) {
@@ -89,6 +130,13 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
     const convertedScans = (data as DbScanRow[]).map(convertDbScanToScan);
     setScans(convertedScans);
     setIsLoading(false);
+
+    // Also refresh scan limit info
+    try {
+      await checkScanLimit();
+    } catch (e) {
+      console.error('Error refreshing scan limit:', e);
+    }
   };
 
   useEffect(() => {
@@ -96,6 +144,7 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
       refreshScans();
     } else {
       setScans([]);
+      setScanLimitInfo(null);
       setIsLoading(false);
     }
   }, [isAuthenticated, user?.id]);
@@ -108,6 +157,12 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
     bankData?: BankTransaction[]
   ): Promise<Scan> => {
     if (!user) throw new Error('User not authenticated');
+
+    // Server-side scan limit validation
+    const limitInfo = await checkScanLimit();
+    if (!limitInfo.canCreate) {
+      throw new Error(limitInfo.message || 'You have reached your monthly scan limit. Please upgrade your plan.');
+    }
 
     const { data, error } = await supabase
       .from('scans')
@@ -127,6 +182,9 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
 
     const newScan = convertDbScanToScan(data as DbScanRow);
     setScans(prev => [newScan, ...prev]);
+    
+    // Refresh scan limit info after creating a scan
+    await checkScanLimit();
     
     return newScan;
   };
@@ -233,6 +291,8 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
     <ScanContext.Provider value={{
       scans,
       isLoading,
+      scanLimitInfo,
+      checkScanLimit,
       createScan,
       completeScan,
       getScan,

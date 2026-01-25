@@ -157,7 +157,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_create_scan: { Args: { user_uuid: string }; Returns: boolean }
+      reset_monthly_scan_counts: { Args: never; Returns: undefined }
     }
     Enums: {
       risk_level: "low" | "medium" | "high"
