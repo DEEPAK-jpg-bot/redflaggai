@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,9 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
-import { Upload, FileText, Sparkles, CheckCircle, Loader2 } from 'lucide-react';
+import { Upload, FileText, Sparkles, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
 import { useScan } from '@/contexts/ScanContext';
 import { DEMO_COMPANY, generateLedgerEntries, generateBankTransactions } from '@/lib/mockData';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { toast } from 'sonner';
 
 const INDUSTRIES = ['Wholesale Distribution', 'IT Services', 'Home Services', 'Manufacturing', 'Retail', 'Healthcare', 'SaaS', 'Professional Services'];
 
@@ -31,9 +33,15 @@ const NewScan: React.FC = () => {
   const [processingStep, setProcessingStep] = useState(0);
   const [scanId, setScanId] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [limitError, setLimitError] = useState<string | null>(null);
   
-  const { createScan, completeScan } = useScan();
+  const { createScan, completeScan, scanLimitInfo, checkScanLimit } = useScan();
   const navigate = useNavigate();
+
+  // Check scan limit on mount
+  useEffect(() => {
+    checkScanLimit().catch(console.error);
+  }, []);
 
   const handleUseDemoData = () => {
     setCompanyName(DEMO_COMPANY.name);
@@ -42,10 +50,21 @@ const NewScan: React.FC = () => {
   };
 
   const handleStartProcessing = async () => {
+    setLimitError(null);
     setIsProcessing(true);
-    setStep(3);
     
     try {
+      // Check scan limit before proceeding
+      const limitInfo = await checkScanLimit();
+      if (!limitInfo.canCreate) {
+        setLimitError(limitInfo.message);
+        setIsProcessing(false);
+        toast.error('Scan limit reached', { description: limitInfo.message });
+        return;
+      }
+
+      setStep(3);
+      
       // Generate demo data
       const ledgerData = generateLedgerEntries();
       const bankData = generateBankTransactions();
@@ -70,7 +89,11 @@ const NewScan: React.FC = () => {
       }, 800);
     } catch (error) {
       console.error('Error processing scan:', error);
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      setLimitError(errorMessage);
+      toast.error('Scan failed', { description: errorMessage });
       setIsProcessing(false);
+      setStep(2);
     }
   };
 
@@ -83,6 +106,33 @@ const NewScan: React.FC = () => {
           <h1 className="text-3xl font-bold text-foreground">New Scan</h1>
           <p className="text-muted-foreground">Analyze a company's financials for red flags</p>
         </div>
+
+        {/* Scan limit info */}
+        {scanLimitInfo && (
+          <Alert variant={scanLimitInfo.canCreate ? 'default' : 'destructive'}>
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>
+              {scanLimitInfo.canCreate ? 'Scans Available' : 'Scan Limit Reached'}
+            </AlertTitle>
+            <AlertDescription>
+              {scanLimitInfo.message}
+              {!scanLimitInfo.canCreate && (
+                <Button variant="link" className="p-0 h-auto ml-2" onClick={() => navigate('/pricing')}>
+                  Upgrade Plan
+                </Button>
+              )}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Limit error */}
+        {limitError && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{limitError}</AlertDescription>
+          </Alert>
+        )}
 
         {/* Progress indicator */}
         <div className="flex items-center gap-2">
