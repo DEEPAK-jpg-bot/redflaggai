@@ -21,13 +21,17 @@ export type Database = {
           created_at: string
           email: string
           full_name: string | null
+          has_used_free_trial: boolean
           id: string
+          last_scan_reset_at: string | null
           monthly_scan_limit: number
+          rollover_scans: number
           scans_used_this_month: number
           stripe_customer_id: string | null
           subscription_ends_at: string | null
           subscription_plan: Database["public"]["Enums"]["subscription_plan"]
           subscription_started_at: string | null
+          trial_ends_at: string | null
           updated_at: string
           user_id: string
         }
@@ -37,13 +41,17 @@ export type Database = {
           created_at?: string
           email: string
           full_name?: string | null
+          has_used_free_trial?: boolean
           id?: string
+          last_scan_reset_at?: string | null
           monthly_scan_limit?: number
+          rollover_scans?: number
           scans_used_this_month?: number
           stripe_customer_id?: string | null
           subscription_ends_at?: string | null
           subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
           subscription_started_at?: string | null
+          trial_ends_at?: string | null
           updated_at?: string
           user_id: string
         }
@@ -53,13 +61,17 @@ export type Database = {
           created_at?: string
           email?: string
           full_name?: string | null
+          has_used_free_trial?: boolean
           id?: string
+          last_scan_reset_at?: string | null
           monthly_scan_limit?: number
+          rollover_scans?: number
           scans_used_this_month?: number
           stripe_customer_id?: string | null
           subscription_ends_at?: string | null
           subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
           subscription_started_at?: string | null
+          trial_ends_at?: string | null
           updated_at?: string
           user_id?: string
         }

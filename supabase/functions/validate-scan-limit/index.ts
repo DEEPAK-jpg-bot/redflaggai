@@ -67,10 +67,10 @@ serve(async (req) => {
     const user = userData.user;
     logStep("User authenticated", { userId: user.id });
 
-    // Fetch user's profile with scan limits
+    // Fetch user's profile with scan limits including rollover
     const { data: profile, error: profileError } = await supabaseClient
       .from("profiles")
-      .select("scans_used_this_month, monthly_scan_limit, subscription_plan")
+      .select("scans_used_this_month, monthly_scan_limit, subscription_plan, rollover_scans")
       .eq("user_id", user.id)
       .single();
 
@@ -85,13 +85,19 @@ serve(async (req) => {
       });
     }
 
-    const { scans_used_this_month, monthly_scan_limit, subscription_plan } = profile;
-    const canCreate = scans_used_this_month < monthly_scan_limit;
-    const remainingScans = Math.max(0, monthly_scan_limit - scans_used_this_month);
+    const { scans_used_this_month, monthly_scan_limit, subscription_plan, rollover_scans } = profile;
+    
+    // Can create if: has rollover scans OR hasn't hit monthly limit
+    const hasRolloverAvailable = (rollover_scans || 0) > 0;
+    const hasMonthlyAvailable = scans_used_this_month < monthly_scan_limit;
+    const canCreate = hasRolloverAvailable || hasMonthlyAvailable;
+    
+    const totalAvailable = (rollover_scans || 0) + Math.max(0, monthly_scan_limit - scans_used_this_month);
 
     logStep("Scan limit check", { 
       scans_used: scans_used_this_month, 
       limit: monthly_scan_limit, 
+      rollover: rollover_scans || 0,
       canCreate,
       plan: subscription_plan 
     });
@@ -100,10 +106,11 @@ serve(async (req) => {
       canCreate,
       scansUsed: scans_used_this_month,
       monthlyLimit: monthly_scan_limit,
-      remainingScans,
+      remainingScans: totalAvailable,
+      rolloverScans: rollover_scans || 0,
       plan: subscription_plan,
       message: canCreate 
-        ? `You have ${remainingScans} scan${remainingScans !== 1 ? 's' : ''} remaining this month.`
+        ? `You have ${totalAvailable} scan${totalAvailable !== 1 ? 's' : ''} remaining (${rollover_scans || 0} rollover).`
         : "You've reached your monthly scan limit. Please upgrade your plan for more scans."
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
