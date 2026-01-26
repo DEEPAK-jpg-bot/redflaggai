@@ -79,32 +79,66 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
   const { user, isAuthenticated, session } = useAuth();
 
   const checkScanLimit = async (): Promise<ScanLimitInfo> => {
+    // For unauthenticated users, allow 1 free demo scan
     if (!session?.access_token) {
-      throw new Error('User not authenticated');
+      const freeLimit: ScanLimitInfo = {
+        canCreate: true,
+        scansUsed: 0,
+        monthlyLimit: 1,
+        remainingScans: 1,
+        plan: 'free',
+        message: 'You have 1 free demo scan available. Sign up to save your results!',
+      };
+      setScanLimitInfo(freeLimit);
+      return freeLimit;
     }
 
-    const { data, error } = await supabase.functions.invoke('validate-scan-limit', {
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-      },
-    });
+    try {
+      const { data, error } = await supabase.functions.invoke('validate-scan-limit', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
 
-    if (error) {
-      console.error('Error checking scan limit:', error);
-      throw new Error('Failed to check scan limit');
+      if (error) {
+        console.error('Error checking scan limit:', error);
+        // Fallback to allow scan if check fails (don't block on errors)
+        const fallback: ScanLimitInfo = {
+          canCreate: true,
+          scansUsed: 0,
+          monthlyLimit: 1,
+          remainingScans: 1,
+          plan: 'free',
+          message: 'Unable to verify scan limit. You may proceed.',
+        };
+        setScanLimitInfo(fallback);
+        return fallback;
+      }
+
+      const limitInfo: ScanLimitInfo = {
+        canCreate: data.canCreate,
+        scansUsed: data.scansUsed,
+        monthlyLimit: data.monthlyLimit,
+        remainingScans: data.remainingScans,
+        plan: data.plan,
+        message: data.message,
+      };
+
+      setScanLimitInfo(limitInfo);
+      return limitInfo;
+    } catch (err) {
+      console.error('Scan limit check failed:', err);
+      const fallback: ScanLimitInfo = {
+        canCreate: true,
+        scansUsed: 0,
+        monthlyLimit: 1,
+        remainingScans: 1,
+        plan: 'free',
+        message: 'Unable to verify scan limit. You may proceed.',
+      };
+      setScanLimitInfo(fallback);
+      return fallback;
     }
-
-    const limitInfo: ScanLimitInfo = {
-      canCreate: data.canCreate,
-      scansUsed: data.scansUsed,
-      monthlyLimit: data.monthlyLimit,
-      remainingScans: data.remainingScans,
-      plan: data.plan,
-      message: data.message,
-    };
-
-    setScanLimitInfo(limitInfo);
-    return limitInfo;
   };
 
   const refreshScans = async () => {
