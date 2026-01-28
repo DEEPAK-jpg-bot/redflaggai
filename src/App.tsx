@@ -21,6 +21,12 @@ import ComparisonPage from "./pages/seo/ComparisonPage";
 import SolutionsPage from "./pages/seo/SolutionsPage";
 import BlogIndex from "./pages/seo/BlogIndex";
 import BlogPost from "./pages/seo/BlogPost";
+import IndustriesIndex from "./pages/seo/IndustriesIndex";
+import IndustryPage from "./pages/seo/IndustryPage";
+import AlternativesPage from "./pages/seo/AlternativesPage";
+import ToolsIndex from "./pages/seo/tools/ToolsIndex";
+import EBITDACalculator from "./pages/seo/tools/EBITDACalculator";
+import ValuationCalculator from "./pages/seo/tools/ValuationCalculator";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +54,12 @@ const App = () => (
                 <Route path="/solutions" element={<SolutionsPage />} />
                 <Route path="/blog" element={<BlogIndex />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/industries" element={<IndustriesIndex />} />
+                <Route path="/industries/:industry" element={<IndustryPage />} />
+                <Route path="/alternatives" element={<AlternativesPage />} />
+                <Route path="/tools" element={<ToolsIndex />} />
+                <Route path="/tools/ebitda-calculator" element={<EBITDACalculator />} />
+                <Route path="/tools/valuation-calculator" element={<ValuationCalculator />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
