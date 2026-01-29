@@ -12,6 +12,11 @@ import { useScan } from '@/contexts/ScanContext';
 import { DEMO_COMPANY, generateLedgerEntries, generateBankTransactions } from '@/lib/mockData';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { toast } from 'sonner';
+import LiveAnalysisFeed from '@/components/LiveAnalysisFeed';
+import { AnalysisLog, forensicDragnet } from '@/lib/forensicEngine';
+import Papa from 'papaparse';
+import { LedgerEntry, BankTransaction } from '@/types';
+import { supabase } from '@/integrations/supabase/client';
 
 const INDUSTRIES = ['Wholesale Distribution', 'IT Services', 'Home Services', 'Manufacturing', 'Retail', 'Healthcare', 'SaaS', 'Professional Services'];
 
@@ -34,7 +39,10 @@ const NewScan: React.FC = () => {
   const [scanId, setScanId] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [limitError, setLimitError] = useState<string | null>(null);
-  
+  const [analysisLogs, setAnalysisLogs] = useState<AnalysisLog[]>([]);
+  const [ledgerFile, setLedgerFile] = useState<File | null>(null);
+  const [bankFile, setBankFile] = useState<File | null>(null);
+
   const { createScan, completeScan, scanLimitInfo, checkScanLimit } = useScan();
   const navigate = useNavigate();
 
@@ -52,7 +60,7 @@ const NewScan: React.FC = () => {
   const handleStartProcessing = async () => {
     setLimitError(null);
     setIsProcessing(true);
-    
+
     try {
       // Check scan limit before proceeding
       const limitInfo = await checkScanLimit();
@@ -63,30 +71,114 @@ const NewScan: React.FC = () => {
         return;
       }
 
-      setStep(3);
-      
-      // Generate demo data
-      const ledgerData = generateLedgerEntries();
-      const bankData = generateBankTransactions();
-      
-      // Create the scan
-      const scan = await createScan(companyName, industry, Number(askingPrice), ledgerData, bankData);
-      setScanId(scan.id);
-      
-      // Simulate processing steps
-      let currentStep = 0;
-      const interval = setInterval(async () => {
-        currentStep++;
-        setProcessingStep(currentStep);
-        if (currentStep >= PROCESSING_STEPS.length) {
-          clearInterval(interval);
-          
-          // Complete the scan with analysis
-          await completeScan(scan.id, ledgerData, bankData);
-          
-          setTimeout(() => navigate(`/scan/${scan.id}/report`), 500);
+      // 1. Parsing Phase
+      let parsedLedger: LedgerEntry[] = [];
+
+      // Use demo data if no file, otherwise parse real file
+      if (!ledgerFile) {
+        parsedLedger = generateLedgerEntries();
+        // Simulate "Dragnet" on demo data
+        parsedLedger.forEach((entry, i) => {
+          const { isSuspicious, log } = forensicDragnet(entry, i);
+          if (log) setAnalysisLogs(prev => [...prev, log]);
+        });
+      } else {
+        // Real CSV Parsing
+        await new Promise<void>((resolve, reject) => {
+          Papa.parse(ledgerFile, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+              // Map CSV columns to LedgerEntry type (Basic mapping)
+              parsedLedger = results.data.map((row: any) => ({
+                date: row.Date || row.date || new Date().toISOString(),
+                description: row.Description || row.description || 'Unknown',
+                category: row.Category || row.category || 'Uncategorized',
+                amount: parseFloat(row.Amount || row.amount || '0'),
+                type: (parseFloat(row.Amount || row.amount || '0') < 0) ? 'expense' : 'revenue'
+              }));
+
+              // SECURITY: Prevent DoS and High AI Costs
+              if (parsedLedger.length > 5000) {
+                reject(new Error("Massive file support (5,000+ rows) is coming soon for Enterprise users. Please use a smaller file for now."));
+                return;
+              }
+
+              resolve();
+            },
+            error: (err) => reject(err)
+          });
+        });
+      }
+
+      const bankData = generateBankTransactions(); // Keep bank mock for now if file missing
+
+      // 2. Intelligent Batch Analysis (AI Loop)
+      const BATCH_SIZE = 50;
+      const totalBatches = Math.ceil(parsedLedger.length / BATCH_SIZE);
+      let contextSummary = "";
+
+      for (let i = 0; i < totalBatches; i++) {
+        const batch = parsedLedger.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE);
+        setProcessingStep(i + 1);
+
+        // Run Local Forensic Dragnet first (Instant)
+        batch.forEach((entry, idx) => {
+          const { log } = forensicDragnet(entry, (i * BATCH_SIZE) + idx);
+          if (log) setAnalysisLogs(prev => [...prev, log]);
+        });
+
+        // Call AI Edge Function (Throttled)
+        try {
+          // Visual feedback
+          setAnalysisLogs(prev => [...prev, {
+            id: `batch-${i}`,
+            message: `🤖 AI Analyzing Batch ${i + 1}/${totalBatches}...`,
+            type: 'info',
+            timestamp: new Date()
+          }]);
+
+          const { data, error } = await supabase.functions.invoke('analyze-batch', {
+            body: {
+              batchId: i,
+              transactions: batch,
+              contextSummary
+            }
+          });
+
+          if (!error && data?.suspicious_items) {
+            data.suspicious_items.forEach((item: any) => {
+              setAnalysisLogs(prev => [...prev, {
+                id: Math.random().toString(),
+                message: `🚩 AI FLAGGED: ${item.description} - ${item.reason}`,
+                type: 'danger',
+                timestamp: new Date()
+              }]);
+            });
+            contextSummary = data.new_context_summary || contextSummary;
+          }
+
+        } catch (err) {
+          console.error("AI Batch failed (skipping):", err);
         }
-      }, 800);
+
+        // Artificial delay to respect Rate Limits + UX pacing
+        await new Promise(r => setTimeout(r, 2000));
+      }
+
+      // 3. Completion
+      setAnalysisLogs(prev => [...prev, {
+        id: 'done',
+        type: 'success',
+        message: 'ANALYSIS COMPLETE. REPORT GENERATED.',
+        timestamp: new Date()
+      }]);
+
+      const scan = await createScan(companyName, industry, Number(askingPrice), parsedLedger, bankData);
+      setScanId(scan.id);
+      await completeScan(scan.id, parsedLedger, bankData);
+
+      setTimeout(() => navigate(`/scan/${scan.id}/report`), 1500);
     } catch (error) {
       console.error('Error processing scan:', error);
       const errorMessage = error instanceof Error ? error.message : 'An error occurred';
@@ -97,7 +189,7 @@ const NewScan: React.FC = () => {
     }
   };
 
-  const progress = (processingStep / PROCESSING_STEPS.length) * 100;
+  const progress = (processingStep / 40) * 100;
 
   return (
     <DashboardLayout>
@@ -182,11 +274,20 @@ const NewScan: React.FC = () => {
               <CardDescription>Upload the company's accounting ledger and bank statements</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="rounded-lg border-2 border-dashed border-border p-8 text-center">
-                <Upload className="mx-auto h-10 w-10 text-muted-foreground" />
-                <p className="mt-2 font-medium">Accounting Ledger (CSV)</p>
-                <p className="text-sm text-muted-foreground">Drag & drop or click to upload</p>
-              </div>
+              <Input
+                type="file"
+                accept=".csv"
+                className="hidden"
+                id="ledger-upload"
+                onChange={(e) => e.target.files?.[0] && setLedgerFile(e.target.files[0])}
+              />
+              <Label htmlFor="ledger-upload" className="cursor-pointer block">
+                <div className="flex flex-col items-center">
+                  <Upload className={`mx-auto h-10 w-10 ${ledgerFile ? 'text-green-500' : 'text-muted-foreground'}`} />
+                  <p className="mt-2 font-medium">{ledgerFile ? ledgerFile.name : "Accounting Ledger (CSV)"}</p>
+                  <p className="text-sm text-muted-foreground">{ledgerFile ? "Click to replace" : "Drag & drop or click to upload"}</p>
+                </div>
+              </Label>
               <div className="rounded-lg border-2 border-dashed border-border p-8 text-center">
                 <FileText className="mx-auto h-10 w-10 text-muted-foreground" />
                 <p className="mt-2 font-medium">Bank Statement (CSV)</p>
@@ -202,21 +303,19 @@ const NewScan: React.FC = () => {
         )}
 
         {step === 3 && (
-          <Card>
-            <CardHeader>
+          <Card className="border-0 shadow-none bg-transparent">
+            <CardHeader className="px-0">
               <CardTitle>Analyzing {companyName}</CardTitle>
-              <CardDescription>Please wait while we scan for red flags...</CardDescription>
+              <CardDescription>
+                AI Forensic Engine is scanning transaction patterns...
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <Progress value={progress} className="h-2" />
-              <div className="rounded-lg bg-primary p-4 font-mono text-sm text-primary-foreground">
-                {PROCESSING_STEPS.slice(0, processingStep + 1).map((msg, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    {i < processingStep ? <CheckCircle className="h-4 w-4 text-success" /> : <Loader2 className="h-4 w-4 animate-spin" />}
-                    <span>{msg}</span>
-                  </div>
-                ))}
-              </div>
+            <CardContent className="px-0 space-y-6">
+              <LiveAnalysisFeed
+                logs={analysisLogs}
+                isScanning={isProcessing}
+                progress={progress}
+              />
             </CardContent>
           </Card>
         )}

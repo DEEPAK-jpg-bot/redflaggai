@@ -76,7 +76,7 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
   const [scans, setScans] = useState<Scan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [scanLimitInfo, setScanLimitInfo] = useState<ScanLimitInfo | null>(null);
-  const { user, isAuthenticated, session } = useAuth();
+  const { user, isAuthenticated, session, subscription } = useAuth();
 
   const checkScanLimit = async (): Promise<ScanLimitInfo> => {
     // For unauthenticated users, allow 1 free demo scan
@@ -184,8 +184,8 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
   }, [isAuthenticated, user?.id]);
 
   const createScan = async (
-    companyName: string, 
-    industry: string, 
+    companyName: string,
+    industry: string,
     askingPrice: number,
     ledgerData?: LedgerEntry[],
     bankData?: BankTransaction[]
@@ -216,10 +216,10 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
 
     const newScan = convertDbScanToScan(data as DbScanRow);
     setScans(prev => [newScan, ...prev]);
-    
+
     // Refresh scan limit info after creating a scan
     await checkScanLimit();
-    
+
     return newScan;
   };
 
@@ -229,15 +229,15 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
     // Run the analysis
     const revenueAnalysis = analyzeRevenueDiscrepancy(ledgerData, bankData);
     const personalExpenses = detectPersonalExpenses(ledgerData);
-    
+
     // Generate customer data
     const customers = generateCustomerData();
     const churnAnalysis = calculateCustomerChurn(customers);
-    
+
     // Calculate EBITDA
     const reportedNetIncome = 185000;
     const ebitdaBridge = computeAdjustedEBITDA(reportedNetIncome, personalExpenses, 15000);
-    
+
     // Generate risk score
     const partialReport = {
       revenueAnalysis: {
@@ -251,7 +251,7 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
         ...churnAnalysis,
       },
     };
-    
+
     const riskScore = generateRiskScore(partialReport);
     const riskLevel = getRiskLevel(riskScore);
 
@@ -275,15 +275,15 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
     if (error) throw new Error(error.message);
 
     // Update local state
-    setScans(prev => prev.map(scan => 
-      scan.id === scanId 
-        ? { 
-            ...scan, 
-            status: 'completed' as const, 
-            riskScore,
-            riskLevel,
-            completedAt: new Date(),
-          }
+    setScans(prev => prev.map(scan =>
+      scan.id === scanId
+        ? {
+          ...scan,
+          status: 'completed' as const,
+          riskScore,
+          riskLevel,
+          completedAt: new Date(),
+        }
         : scan
     ));
   };
@@ -302,13 +302,13 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
     if (error || !data) return null;
 
     const dbScan = data as DbScanRow;
-    
+
     if (dbScan.status !== 'completed' || !dbScan.revenue_analysis) {
       // Return demo report for demo scans
       return generateDemoReport(scanId);
     }
 
-    return {
+    const report: QoEReport = {
       scanId: dbScan.id,
       companyName: dbScan.company_name,
       riskScore: dbScan.risk_score || 0,
@@ -319,6 +319,44 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
       ebitdaBridge: (dbScan.ebitda_bridge as unknown as EBITDABridge) || { reportedNetIncome: 0, personalExpenseAddBack: 0, otherAdjustments: 0, trueAdjustedEBITDA: 0 },
       generatedAt: new Date(dbScan.completed_at || dbScan.created_at),
     };
+
+    // SECURITY: Mask sensitive data for free users on the backend
+    const isFreeUser = !subscription.subscribed || subscription.plan === 'free';
+
+    if (isFreeUser) {
+      // Mask Monthly Data
+      if (report.revenueAnalysis?.monthlyData) {
+        report.revenueAnalysis.monthlyData = report.revenueAnalysis.monthlyData.map(m => ({
+          ...m,
+          bookedRevenue: 0,
+          actualDeposits: 0,
+          discrepancy: 0
+        }));
+      }
+
+      // Mask Customers
+      if (report.customerChurn?.customers) {
+        report.customerChurn.customers = report.customerChurn.customers.map(c => ({
+          ...c,
+          name: "PRO_USER_ONLY",
+          month1Spend: 0,
+          month2Spend: 0,
+          month3Spend: 0
+        }));
+      }
+
+      // Mask Personal Expenses
+      if (report.personalExpenses) {
+        report.personalExpenses = report.personalExpenses.map(e => ({
+          ...e,
+          vendor: "PRO_USER_ONLY",
+          amount: 0,
+          flagReason: "Upgrade to view flag details"
+        }));
+      }
+    }
+
+    return report;
   };
 
   return (
