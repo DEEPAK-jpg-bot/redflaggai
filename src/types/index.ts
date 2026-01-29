@@ -24,7 +24,7 @@ export interface Profile {
   updated_at: string;
 }
 
-export type SubscriptionPlan = 'free' | 'hunter' | 'firm';
+export type SubscriptionPlan = 'free' | 'hunter' | 'firm' | 'tester';
 
 export interface SubscriptionInfo {
   subscribed: boolean;

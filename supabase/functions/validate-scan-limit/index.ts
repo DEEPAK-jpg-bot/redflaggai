@@ -42,9 +42,9 @@ serve(async (req) => {
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
-      return new Response(JSON.stringify({ 
-        canCreate: false, 
-        error: "Authentication required" 
+      return new Response(JSON.stringify({
+        canCreate: false,
+        error: "Authentication required"
       }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 401,
@@ -53,11 +53,11 @@ serve(async (req) => {
 
     const token = authHeader.replace("Bearer ", "");
     const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
-    
+
     if (userError || !userData.user) {
-      return new Response(JSON.stringify({ 
-        canCreate: false, 
-        error: "Invalid authentication" 
+      return new Response(JSON.stringify({
+        canCreate: false,
+        error: "Invalid authentication"
       }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 401,
@@ -76,40 +76,47 @@ serve(async (req) => {
 
     if (profileError || !profile) {
       logStep("Profile not found", { error: profileError?.message });
-      return new Response(JSON.stringify({ 
-        canCreate: false, 
-        error: "User profile not found" 
+      return new Response(JSON.stringify({
+        canCreate: false,
+        error: "User profile not found"
       }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 404,
       });
     }
 
-    const { scans_used_this_month, monthly_scan_limit, subscription_plan, rollover_scans } = profile;
-    
+    let { scans_used_this_month, monthly_scan_limit, subscription_plan, rollover_scans } = profile;
+
+    // Check if it's the tester account
+    if (user.email === "tester@redflag.ai") {
+      logStep("Tester account detected, overriding limits");
+      monthly_scan_limit = 20;
+      subscription_plan = "tester" as any;
+    }
+
     // Can create if: has rollover scans OR hasn't hit monthly limit
     const hasRolloverAvailable = (rollover_scans || 0) > 0;
     const hasMonthlyAvailable = scans_used_this_month < monthly_scan_limit;
     const canCreate = hasRolloverAvailable || hasMonthlyAvailable;
-    
+
     const totalAvailable = (rollover_scans || 0) + Math.max(0, monthly_scan_limit - scans_used_this_month);
 
-    logStep("Scan limit check", { 
-      scans_used: scans_used_this_month, 
-      limit: monthly_scan_limit, 
+    logStep("Scan limit check", {
+      scans_used: scans_used_this_month,
+      limit: monthly_scan_limit,
       rollover: rollover_scans || 0,
       canCreate,
-      plan: subscription_plan 
+      plan: subscription_plan
     });
 
-    return new Response(JSON.stringify({ 
+    return new Response(JSON.stringify({
       canCreate,
       scansUsed: scans_used_this_month,
       monthlyLimit: monthly_scan_limit,
       remainingScans: totalAvailable,
       rolloverScans: rollover_scans || 0,
       plan: subscription_plan,
-      message: canCreate 
+      message: canCreate
         ? `You have ${totalAvailable} scan${totalAvailable !== 1 ? 's' : ''} remaining (${rollover_scans || 0} rollover).`
         : "You've reached your monthly scan limit. Please upgrade your plan for more scans."
     }), {
@@ -119,9 +126,9 @@ serve(async (req) => {
 
   } catch (error) {
     console.error("[VALIDATE-SCAN-LIMIT] ERROR:", error);
-    return new Response(JSON.stringify({ 
+    return new Response(JSON.stringify({
       canCreate: false,
-      error: "An error occurred while validating scan limit. Please try again." 
+      error: "An error occurred while validating scan limit. Please try again."
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
