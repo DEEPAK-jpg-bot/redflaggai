@@ -4,11 +4,12 @@ import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { CalendarDays, Clock, ArrowRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 export const blogPosts = [
-  // FEATURED / QUICK WINS
+  // HIGH-PRIORITY QUICK WINS (Featured)
   {
     slug: 'verify-company-legitimate-2025',
     title: 'How to Verify a Company is Legitimate in 2025: The 5-Minute Checklist',
@@ -56,37 +57,69 @@ export const blogPosts = [
   },
 
   // CATEGORY A: HORROR STORIES
-  { slug: '2m-lesson-commodity-trader-fraud', title: 'The $2M Lesson: How a Commodity Trader Lost Everything to a Shell Company', description: 'A cautionary tale of due diligence failure and the simple check that would have saved it all.', category: 'Horror Stories', date: '2024-01-15', readTime: '10 min read', featured: false },
-  { slug: '9-common-acquisition-frauds-2025', title: '9 Most Common Small Business Acquisition Frauds in 2025', description: 'Real cases of fraud that every search funder and buyer needs to know before signing an LOI.', category: 'Horror Stories', date: '2024-01-14', readTime: '12 min read', featured: false },
-  { slug: 'phantom-suppliers-ghost-freight-forwarders', title: 'Phantom Suppliers: How "Ghost" Freight Forwarders Are Stealing Cargo', description: 'The rise of double-brokerage scams and phantom logistics providers in international trade.', category: 'Horror Stories', date: '2024-01-12', readTime: '7 min read', featured: false },
-  { slug: 'vitalcaring-case-hidden-liabilities', title: 'The VitalCaring Case: Hidden Liabilities That Cost Buyers 43% of Profits', description: 'Why pre-screening for historical liabilities is more important than the current balance sheet.', category: 'Horror Stories', date: '2024-01-10', readTime: '9 min read', featured: false },
-  { slug: 'infogrid-vs-aquicore-fake-revenue', title: 'Infogrid vs Aquicore: When Sellers Triple Fake Revenue to Close Deals', description: 'Anatomy of revenue fraud and how AI catches round-tripped transactions instantly.', category: 'Horror Stories', date: '2024-01-08', readTime: '11 min read', featured: false },
+  { slug: '2m-lesson-commodity-trader-fraud', title: 'The $2M Lesson: How a Commodity Trader Lost Everything to a Shell Company', description: 'A cautionary tale of due diligence failure in the oil & gas sector.', category: 'Horror Stories', date: '2024-01-15', readTime: '10 min read', featured: false },
+  { slug: '9-common-acquisition-frauds-2025', title: '9 Most Common Small Business Acquisition Frauds in 2025', description: 'Real case studies of fraud every buyer should know.', category: 'Horror Stories', date: '2024-01-14', readTime: '12 min read', featured: false },
+  { slug: 'phantom-suppliers-ghost-freight-forwarders', title: 'Phantom Suppliers: How "Ghost" Freight Forwarders Are Stealing Cargo', description: 'The rise of double-brokerage scams in 2025.', category: 'Horror Stories', date: '2024-01-12', readTime: '7 min read', featured: false },
+  { slug: 'vitalcaring-case-hidden-liabilities', title: 'The VitalCaring Case: Hidden Liabilities That Cost Buyers 43% of Profits', description: 'Hidden debt and legal traps in healthcare acquisitions.', category: 'Horror Stories', date: '2024-01-10', readTime: '9 min read', featured: false },
+  { slug: 'infogrid-vs-aquicore-fake-revenue', title: 'Infogrid vs Aquicore: When Sellers Triple Fake Revenue to Close Deals', description: 'Anatomy of revenue overstatement.', category: 'Horror Stories', date: '2024-01-08', readTime: '11 min read', featured: false },
+  { slug: 'hong-kong-virtual-office-scam', title: 'How a "Legitimate" Supplier in HK Turned Out to be a Virtual Office', description: 'Verifying physical presence in international trade.', category: 'Horror Stories', date: '2024-01-07', readTime: '6 min read', featured: false },
+  { slug: 'save-mart-arbitration-earn-out-gamesmanship', title: 'The Save Mart Arbitration: Why Earn-Out Gamesmanship Cost $70M', description: 'The hidden risks in deal structuring.', category: 'Horror Stories', date: '2024-01-06', readTime: '10 min read', featured: false },
+  { slug: 'brooge-energy-anatomy-of-revenue-overstatement', title: 'Brooge Energy: Anatomy of an 80% Revenue Overstatement SPAC Fraud', description: 'A deeper look at public market vs private due diligence.', category: 'Horror Stories', date: '2024-01-05', readTime: '13 min read', featured: false },
+  { slug: 'meta-due-diligence-failures', title: 'When the Due Diligence Firm Itself is a Fraud: Meta-Failures', description: 'How to verify your advisors.', category: 'Horror Stories', date: '2024-01-04', readTime: '8 min read', featured: false },
 
   // CATEGORY B: HOW-TO GUIDES
-  { slug: 'detect-revenue-fraud-small-business', title: 'How to Detect Revenue Fraud When Buying a Small Business', description: 'The forensic accountant\'s guide to spotting "Lapping" and fictitious customers.', category: 'Guide', date: '2024-01-07', readTime: '15 min read', featured: false },
-  { slug: 'phantom-customer-detection-round-tripping', title: 'Phantom Customer Detection: How to Spot Round-Tripped Cash', description: 'Advanced techniques for verifying that revenue is coming from real customers, not the sellers pocket.', category: 'Guide', date: '2024-01-06', readTime: '8 min read', featured: false },
-  { slug: 'verify-international-suppliers-guide', title: 'Verifying International Suppliers: A Country-by-Country Guide', description: 'How to navigate registry searches globally without getting lost in translation.', category: 'Guide', date: '2024-01-05', readTime: '20 min read', featured: false },
-  { slug: 'verify-bill-of-lading-real', title: 'How to Verify a Bill of Lading is Real (Trade Finance Security)', description: 'GPS tracking and ship metadata: The new standard for verifying physical trade docs.', category: 'Guide', date: '2024-01-04', readTime: '6 min read', featured: false },
-  { slug: 'kyb-compliance-2025-automation', title: 'KYB Compliance in 2025: Automating Know Your Business Verification', description: 'Moving from manual document checking to automated identity data rooms.', category: 'Guide', date: '2024-01-03', readTime: '10 min read', featured: false },
+  { slug: 'verify-company-5-minutes', title: 'How to Verify a Company is Legitimate in Under 5 Minutes', description: 'A practical, technical guide for procurement teams.', category: 'Guide', date: '2024-01-03', readTime: '5 min read', featured: false },
+  { slug: 'pre-acquisition-screening-checklist', title: 'The Pre-Acquisition Screening Checklist: Kill Bad Deals in 48 Hours', description: 'Efficiency protocol for searchers.', category: 'Guide', date: '2024-01-02', readTime: '6 min read', featured: false },
+  { slug: 'shell-company-detection-10-red-flags', title: 'How to Check if a Company is a Shell Company: 10 Red Flags', description: 'Industrial-grade detection methods.', category: 'Guide', date: '2024-01-01', readTime: '8 min read', featured: false },
+  { slug: 'verify-international-suppliers-country-guide', title: 'Verifying International Suppliers: A Country-by-Country Guide', description: 'Covering 35+ jurisdictions.', category: 'Guide', date: '2023-12-30', readTime: '20 min read', featured: false },
+  { slug: 'detect-revenue-fraud-small-business', title: 'How to Detect Revenue Fraud When Buying a Small Business', description: 'Forensic methods for private deals.', category: 'Guide', date: '2023-12-28', readTime: '15 min read', featured: false },
+  { slug: 'phantom-customer-detection-round-tripping', title: 'Phantom Customer Detection: How to Spot Round-Tripped Cash', description: 'Advanced cash flow analysis.', category: 'Guide', date: '2023-12-25', readTime: '8 min read', featured: false },
+  { slug: 'verify-bill-of-lading-real', title: 'How to Verify a Bill of Lading is Real (Trade Finance Security)', description: 'Ship tracking and doc verification.', category: 'Guide', date: '2023-12-23', readTime: '6 min read', featured: false },
+  { slug: '3-step-company-check-before-lawyer', title: 'The 3-Step Company Check Anyone Can Do (Before Hiring a Lawyer)', description: 'Save on legal fees by screening early.', category: 'Guide', date: '2023-12-21', readTime: '4 min read', featured: false },
+  { slug: 'credit-check-private-company-cheap', title: 'How to Run a Credit Check on a Private Company (Without Spending $500)', description: 'Affordable risk data sources.', category: 'Guide', date: '2023-12-19', readTime: '7 min read', featured: false },
+  { slug: 'kyb-compliance-2025-automation', title: 'KYB Compliance in 2025: Automating Know Your Business Verification', description: 'Future-proofing your onboarding.', category: 'Guide', date: '2023-12-17', readTime: '10 min read', featured: false },
 
   // CATEGORY C: INDUSTRY DEEP DIVES
-  { slug: 'commodity-trading-due-diligence-guide', title: 'Commodity Trading Due Diligence: Oil, Metals & Agri Counterparties', description: 'Specific verification protocols for traders moving millions in physical commodities.', category: 'Industry', date: '2024-01-02', readTime: '9 min read', featured: false },
-  { slug: 'procurement-fraud-prevention-manager-protocol', title: 'Procurement Fraud Prevention: The Manager\'s Security Protocol', description: 'Build a fraud-proof vendor onboarding process in under 10 minutes per supplier.', category: 'Industry', date: '2023-12-30', readTime: '11 min read', featured: false },
-  { slug: 'private-equity-red-flag-screening-pre-data-room', title: 'Private Equity Red Flag Screening: What to Check Before the Data Room', description: 'Save your associates 40 hours of work by screening targets before you open the VDR.', category: 'Industry', date: '2023-12-28', readTime: '8 min read', featured: false },
+  { slug: 'commodity-trading-due-diligence-guide', title: 'Commodity Trading Due Diligence: Checking Counterparties', description: 'Oil, metals, and agri-trader protocols.', category: 'Industry', date: '2023-12-15', readTime: '9 min read', featured: false },
+  { slug: 'freight-forwarder-verification-8-checks', title: 'Freight Forwarder Verification: 8 Checks Before Shipping', description: 'Preventing logistics scams.', category: 'Industry', date: '2023-12-14', readTime: '7 min read', featured: false },
+  { slug: 'procurement-fraud-prevention-manager-protocol', title: 'Procurement Fraud Prevention: The Manager\'s Protocol', description: 'Building a secure supply chain.', category: 'Industry', date: '2023-12-12', readTime: '11 min read', featured: false },
+  { slug: 'private-equity-red-flag-screening-pre-data-room', title: 'Private Equity Red Flag Screening: What to Check Before the Data Room', description: 'Pre-LOI targets.', category: 'Industry', date: '2023-12-10', readTime: '8 min read', featured: false },
+  { slug: 'trade-finance-fraud-prevention-ai-vs-manual', title: 'Trade Finance Fraud Prevention: AI Tools vs. Manual Checking', description: 'Evolving trade security.', category: 'Industry', date: '2023-12-08', readTime: '10 min read', featured: false },
+  { slug: 'family-office-investment-screening', title: 'Family Office Investment Screening: Competing with Institutional Diligence', description: 'Small team advantage.', category: 'Industry', date: '2023-12-06', readTime: '9 min read', featured: false },
+  { slug: 'logistics-provider-verification-double-brokerage', title: 'Logistics Provider Verification: Detecting Double-Brokerage Scams', description: 'Carrier security.', category: 'Industry', date: '2023-12-04', readTime: '8 min read', featured: false },
+  { slug: 'cryptocurrency-exchange-kyb-partners', title: 'Cryptocurrency Exchange Due Diligence: KYB for Partners', description: 'Digital asset security.', category: 'Industry', date: '2023-12-02', readTime: '10 min read', featured: false },
+  { slug: 'real-estate-reit-verification-counterparties', title: 'Real Estate Investment Trust Verification: Checking Counterparties', description: 'Property deal risk.', category: 'Industry', date: '2023-11-30', readTime: '9 min read', featured: false },
+  { slug: 'emerging-market-due-diligence-playbook', title: 'Emerging Market Due Diligence: High-Risk Country Playbook', description: 'Global risk navigation.', category: 'Industry', date: '2023-11-28', readTime: '12 min read', featured: false },
 
-  // CATEGORY D: COST & ROI
-  { slug: 'why-due-diligence-costs-25k', title: 'Why Full Due Diligence Costs £25,000 (And How to Pre-Screen for £20)', description: 'The economics of deal flow and why expensive diligence is for the final 1% of deals.', category: 'ROI', date: '2023-12-25', readTime: '7 min read', featured: false },
-  { slug: 'ai-vs-intern-manual-research-cost', title: 'AI vs. Intern: The True Cost of Manual Company Research', description: 'Why manual research is 10x more expensive than automated red flag detection.', category: 'ROI', date: '2023-12-22', readTime: '5 min read', featured: false },
-  { slug: 'calculating-roi-pre-acquisition-screening', title: 'Calculating ROI on Pre-Acquisition Screening Tools', description: 'How to justify the cost of AI verification to your investment committee.', category: 'ROI', date: '2023-12-20', readTime: '6 min read', featured: false },
+  // CATEGORY D: ROI & COST
+  { slug: 'why-due-diligence-costs-25k', title: 'Why Full Due Diligence Costs £25,000 (And How to Pre-Screen for £20)', description: 'The economics of search funds.', category: 'ROI', date: '2023-11-25', readTime: '7 min read', featured: false },
+  { slug: '90-percent-cost-reduction-procurement-automation', title: 'The 90% Cost Reduction: Automating Vendor Verification', description: 'Efficiency in procurement.', category: 'ROI', date: '2023-11-22', readTime: '6 min read', featured: false },
+  { slug: 'due-diligence-cost-calculator-manual-vs-ai', title: 'Due Diligence Cost Calculator: Manual vs. AI-Powered', description: 'Interactive math for CFOs.', category: 'ROI', date: '2023-11-20', readTime: '5 min read', featured: false },
+  { slug: 'small-pe-firms-vs-kkr-level-diligence', title: 'How Small PE Firms Can Compete with KKR-Level Diligence', description: 'Democratizing data.', category: 'ROI', date: '2023-11-18', readTime: '8 min read', featured: false },
+  { slug: 'hidden-cost-of-not-verifying-145k-loss', title: 'The Hidden Cost of NOT Verifying: $145k Average Fraud Loss', description: 'Risk of ignorance.', category: 'ROI', date: '2023-11-15', readTime: '10 min read', featured: false },
+  { slug: 'red-flag-due-diligence-kill-fast-strategy', title: 'Red Flag Due Diligence: The "Kill Fast" Strategy That Saves Millions', description: 'Portfolio management at speed.', category: 'ROI', date: '2023-11-12', readTime: '7 min read', featured: false },
+  { slug: 'evaluate-50-percent-more-deals-without-headcount', title: 'How to Evaluate 50% More Deals Without Adding Headcount', description: 'Scaling deal flow.', category: 'ROI', date: '2023-11-10', readTime: '6 min read', featured: false },
+  { slug: 'ai-vs-intern-manual-research-cost', title: 'AI vs. Intern: The True Cost of Manual Company Research', description: 'Speed vs sweat equity.', category: 'ROI', date: '2023-11-08', readTime: '5 min read', featured: false },
+  { slug: 'the-19-99-due-diligence-report-whats-missing', title: 'The £19.99 Due Diligence Report: What\'s Missing vs. Full Diligence?', description: 'Defensive pricing analysis.', category: 'ROI', date: '2023-11-05', readTime: '8 min read', featured: false },
+  { slug: 'calculating-roi-pre-acquisition-screening', title: 'Calculating ROI on Pre-Acquisition Screening Tools', description: 'Hard numbers for committees.', category: 'ROI', date: '2023-11-01', readTime: '6 min read', featured: false },
 
   // CATEGORY E: TECHNICAL AUTHORITY
-  { slug: 'ubo-verification-2025-guide', title: 'Understanding Ultimate Beneficial Ownership (UBO) in 2025', description: 'The changing landscape of corporate transparency and how to peel back the layers.', category: 'Technical', date: '2023-12-15', readTime: '14 min read', featured: false },
-  { slug: 'benfords-law-financial-fraud-detection', title: 'Benford\'s Law and Financial Statement Fraud Detection', description: 'Using mathematical patterns to spot manipulated earnings and round numbers.', category: 'Technical', date: '2023-12-10', readTime: '8 min read', featured: false },
-  { slug: 'graph-ai-due-diligence-hidden-networks', title: 'Graph AI in Due Diligence: Mapping Hidden Corporate Networks', description: 'How AI sees the connections between shell companies that humans miss.', category: 'Technical', date: '2023-12-05', readTime: '12 min read', featured: false },
+  { slug: 'ubo-verification-2025-guide', title: 'Understanding Ultimate Beneficial Ownership (UBO) in 2025', description: 'Peeling back corporate layers.', category: 'Technical', date: '2023-10-28', readTime: '14 min read', featured: false },
+  { slug: 'psychology-of-business-fraud-smart-people', title: 'The Psychology of Business Fraud: Why Smart People Fall for Scams', description: 'Cognitive biases in M&A.', category: 'Technical', date: '2023-10-25', readTime: '9 min read', featured: false },
+  { slug: 'benfords-law-financial-fraud-detection', title: 'Benford\'s Law and Financial Statement Fraud Detection', description: 'Mathematical patterns in earnings.', category: 'Technical', date: '2023-10-22', readTime: '8 min read', featured: false },
+  { slug: 'whois-data-for-due-diligence-domain-secrets', title: 'WHOIS Data for Due Diligence: What Domain Records Reveal', description: 'Digital footprint analysis.', category: 'Technical', date: '2023-10-20', readTime: '7 min read', featured: false },
+  { slug: 'sanctions-screening-ofac-un-eu-traders', title: 'Sanctions Screening 101: OFAC, UN, and EU List Checking', description: 'Global compliance for traders.', category: 'Technical', date: '2023-10-18', readTime: '11 min read', featured: false },
+  { slug: 'metadata-approach-document-forgery-trade-finance', title: 'The Metadata Approach: How AI Detects Document Forgery', description: 'Beyond OCR.', category: 'Technical', date: '2023-10-15', readTime: '10 min read', featured: false },
+  { slug: 'behavioral-biometrics-b2b-fraud-detection', title: 'Behavioral Biometrics in B2B Fraud Detection', description: 'Beyond KYC.', category: 'Technical', date: '2023-10-12', readTime: '9 min read', featured: false },
+  { slug: 'graph-ai-due-diligence-hidden-networks', title: 'Graph AI in Due Diligence: Mapping Hidden Corporate Networks', description: 'Visualizing shell webs.', category: 'Technical', date: '2023-10-10', readTime: '12 min read', featured: false },
 
   // CATEGORY F: COMPARISONS
-  { slug: 'redflags-ai-vs-traditional-credit-reports', title: 'RedFlags AI vs. Traditional Credit Reports: When to Use Which', description: 'Why a credit score doesn\'t tell you if a supplier is a scammer.', category: 'Comparison', date: '2023-12-01', readTime: '6 min read', featured: false },
-  { slug: 'dun-bradstreet-alternative-real-time-verification', title: 'Dun & Bradstreet Alternative: Real-Time Verification for Under £20', description: 'Fast, cheap, and more accurate for fraud detection than legacy bureaus.', category: 'Comparison', date: '2023-11-28', readTime: '7 min read', featured: false },
+  { slug: 'redflags-ai-vs-traditional-credit-reports', title: 'RedFlags AI vs. Traditional Credit Reports: When to Use Which', description: 'Fraud vs Credit risk.', category: 'Comparison', date: '2023-10-05', readTime: '6 min read', featured: false },
+  { slug: 'datasite-vs-pre-screening-tools', title: 'Datasite vs. Pre-Screening Tools: Do You Need Both?', description: 'Complementary tech stack.', category: 'Comparison', date: '2023-10-02', readTime: '5 min read', featured: false },
+  { slug: 'dun-bradstreet-alternative-real-time-verification', title: 'Dun & Bradstreet Alternative: Real-Time for Under £20', description: 'Modernizing verification.', category: 'Comparison', date: '2023-09-30', readTime: '7 min read', featured: false },
+  { slug: 'ai-due-diligence-tools-compared-keye-toltiq', title: 'AI Due Diligence Tools Compared: Keye vs. ToltIQ vs. RedFlags AI', description: 'Feature shootout.', category: 'Comparison', date: '2023-09-25', readTime: '10 min read', featured: false },
+  { slug: 'diy-due-diligence-vs-automated-platforms', title: 'DIY Due Diligence vs. Automated Platforms: A Buyer\'s Guide', description: 'Build vs Buy.', category: 'Comparison', date: '2023-09-20', readTime: '8 min read', featured: false },
+  { slug: 'lexisnexis-vs-instant-verification-apis', title: 'When to Use LexisNexis vs. Instant Verification APIs', description: 'Professional vs Programmatic.', category: 'Comparison', date: '2023-09-15', readTime: '9 min read', featured: false },
 ];
 
 const BlogIndex: React.FC = () => {
