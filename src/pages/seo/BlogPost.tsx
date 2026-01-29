@@ -14,13 +14,13 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
     content: (
       <>
         <p className="lead text-xl text-muted-foreground mb-8">
-          A Quality of Earnings (QoE) report is an essential due diligence tool that goes beyond 
+          A Quality of Earnings (QoE) report is an essential due diligence tool that goes beyond
           standard financial statements to reveal the true financial health of an acquisition target.
         </p>
-        
+
         <h2>What Does a QoE Report Analyze?</h2>
         <p>
-          A comprehensive Quality of Earnings analysis examines several key areas to validate 
+          A comprehensive Quality of Earnings analysis examines several key areas to validate
           the sustainability and accuracy of a company's reported earnings:
         </p>
         <ul>
@@ -33,7 +33,7 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
 
         <h2>Why QoE Reports Matter for Acquisitions</h2>
         <p>
-          When acquiring a business, the purchase price is typically based on a multiple of EBITDA. 
+          When acquiring a business, the purchase price is typically based on a multiple of EBITDA.
           A QoE report helps buyers:
         </p>
         <ol>
@@ -46,7 +46,7 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
 
         <h2>Traditional QoE vs. Automated Analysis</h2>
         <p>
-          Traditional QoE reports from accounting firms provide thorough analysis but come with 
+          Traditional QoE reports from accounting firms provide thorough analysis but come with
           significant costs and timeline requirements:
         </p>
         <table className="w-full border-collapse my-6">
@@ -78,8 +78,8 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
 
         <h2>Key Takeaways</h2>
         <p>
-          A Quality of Earnings report is not optional for serious acquirers. Use automated tools 
-          like RedFlag.ai for preliminary screening, then engage traditional QoE providers for 
+          A Quality of Earnings report is not optional for serious acquirers. Use automated tools
+          like RedFlag.ai for preliminary screening, then engage traditional QoE providers for
           deals that pass initial due diligence.
         </p>
       </>
@@ -89,33 +89,33 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
     content: (
       <>
         <p className="lead text-xl text-muted-foreground mb-8">
-          Search fund operators often underestimate True Adjusted EBITDA because they miss 
+          Search fund operators often underestimate True Adjusted EBITDA because they miss
           legitimate add-backs. Here are the top five most commonly overlooked adjustments.
         </p>
 
         <h2>1. Owner Compensation Above Market Rate</h2>
         <p>
-          Many small business owners pay themselves well above market rate for their role. 
-          If the owner pays themselves $300,000 but a replacement GM would cost $150,000, 
+          Many small business owners pay themselves well above market rate for their role.
+          If the owner pays themselves $300,000 but a replacement GM would cost $150,000,
           the $150,000 difference should be added back to EBITDA.
         </p>
 
         <h2>2. Family Members on Payroll</h2>
         <p>
-          It's common for spouses, children, or relatives to be on payroll with little or no 
+          It's common for spouses, children, or relatives to be on payroll with little or no
           actual work contribution. These salaries and associated benefits are add-backs.
         </p>
 
         <h2>3. Personal Vehicle Expenses</h2>
         <p>
-          Luxury vehicles used primarily for personal purposes, along with associated fuel, 
-          insurance, and maintenance costs, should be added back. Look for high-end brands 
+          Luxury vehicles used primarily for personal purposes, along with associated fuel,
+          insurance, and maintenance costs, should be added back. Look for high-end brands
           like Mercedes, BMW, Tesla Model S/X, and especially exotic cars.
         </p>
 
         <h2>4. Travel and Entertainment</h2>
         <p>
-          Vacation travel disguised as "conferences" or "client meetings" is extremely common. 
+          Vacation travel disguised as "conferences" or "client meetings" is extremely common.
           Look for:
         </p>
         <ul>
@@ -127,16 +127,102 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
 
         <h2>5. Professional Services for Personal Use</h2>
         <p>
-          This includes personal legal work, personal financial planning, and personal insurance 
+          This includes personal legal work, personal financial planning, and personal insurance
           premiums being paid through the business.
         </p>
 
         <h2>How RedFlag.ai Helps</h2>
         <p>
-          Our AI-powered analysis automatically scans expense ledgers for these patterns, 
-          flagging likely personal expenses and calculating their impact on Adjusted EBITDA. 
-          This gives you negotiation leverage and a clearer picture of the business's true 
+          Our AI-powered analysis automatically scans expense ledgers for these patterns,
+          flagging likely personal expenses and calculating their impact on Adjusted EBITDA.
+          This gives you negotiation leverage and a clearer picture of the business's true
           earning power.
+        </p>
+      </>
+    ),
+  },
+  'detecting-revenue-inflation': {
+    content: (
+      <>
+        <p className="lead text-xl text-muted-foreground mb-8">
+          Revenue inflation is the most common form of financial manipulation in small business
+          acquisitions. Detecting it requires looking beyond the P&L and into the raw transaction data.
+        </p>
+
+        <h2>The "Proof of Cash" Test</h2>
+        <p>
+          The most effective way to detect revenue inflation is a monthly Proof of Cash.
+          This process involves matching every dollar of reported revenue in the accounting
+          ledger to an actual deposit in the corporate bank account.
+        </p>
+
+        <h2>Common Manipulation Tactics</h2>
+        <ul>
+          <li><strong>Channel Stuffing</strong> - Shipping excess inventory to customers at year-end to inflate sales.</li>
+          <li><strong>Early Revenue Recognition</strong> - Booking future contracts as current revenue.</li>
+          <li><strong>Fictitious Sales</strong> - Creating fake invoices that are never paid.</li>
+          <li><strong>Customer "Lapping"</strong> - Using funds from one customer to pay off another's old invoice.</li>
+        </ul>
+
+        <h2>Red Flags to Watch For</h2>
+        <p>
+          Be suspicious if:
+        </p>
+        <ul>
+          <li>Revenue spikes significantly in the 6 months before the sale process began.</li>
+          <li>Accounts Receivable is growing much faster than Revenue.</li>
+          <li>A large percentage of revenue comes from new, unverified customers.</li>
+          <li>Cash-on-hand does not grow in proportion to reported Net Income.</li>
+        </ul>
+
+        <h2>Automating Forensic Detection</h2>
+        <p>
+          RedFlag.ai performs an automated Proof of Cash across your entire dataset,
+          instantly flagging months where deposits don't match revenue and highlighting
+          individual transactions that fit manipulation patterns.
+        </p>
+      </>
+    ),
+  },
+  'search-fund-due-diligence-checklist': {
+    content: (
+      <>
+        <p className="lead text-xl text-muted-foreground mb-8">
+          In the competitive world of search funds, the ability to quickly "kill" a bad deal is your
+          greatest competitive advantage. Here is the 10-minute audit used by elite searchers.
+        </p>
+
+        <h2>1. The Revenue-to-Cash Bridge</h2>
+        <p>
+          Compare the last 12 months (LTM) revenue in the P&L to the bank statements. 
+          If there is a >10% variance that the seller can't explain in 2 minutes, walk away.
+        </p>
+
+        <h2>2. Customer Concentration Check</h2>
+        <p>
+          Identify the top 3 customers. If any single customer accounts for >30% of revenue, 
+          or the top 3 account for >60%, the risk profile of the deal changes fundamentally.
+        </p>
+
+        <h2>3. The "Lifestyle" Scan</h2>
+        <p>
+          Quickly scan the expense ledger for luxury car payments, country club dues,
+          and expensive travel. These are your easiest add-backs and the fastest way
+          to see how the owner treats the business.
+        </p>
+
+        <h2>4. Churn Trajectory</h2>
+        <p>
+          Look at the top 10 customers from two years ago. How many are still there?
+          How has their spend changed? Declining spend from old customers is a leading
+          indicator of a dying business.
+        </p>
+
+        <h2>The 10-Minute Reality</h2>
+        <p>
+          RedFlag.ai was built to automate this exact checklist. By uploading a ledger
+          and bank CSV, you get these answers in minutes, allowing you to move fast on
+          good deals and pass instantly on the bad ones.
         </p>
       </>
     ),
@@ -177,12 +263,12 @@ const BlogPost: React.FC = () => {
 
       <div className="min-h-screen bg-background">
         <Header />
-        
+
         <main className="container mx-auto px-4 py-16">
           <article className="max-w-3xl mx-auto">
             {/* Back Link */}
-            <Link 
-              to="/blog" 
+            <Link
+              to="/blog"
               className="inline-flex items-center text-muted-foreground hover:text-foreground mb-8"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -196,10 +282,10 @@ const BlogPost: React.FC = () => {
               <div className="flex items-center gap-6 text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <CalendarDays className="h-4 w-4" />
-                  {new Date(post.date).toLocaleDateString('en-US', { 
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric' 
+                  {new Date(post.date).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
                   })}
                 </span>
                 <span className="flex items-center gap-2">

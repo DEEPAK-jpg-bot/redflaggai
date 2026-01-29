@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { Profile, SubscriptionInfo, SubscriptionPlan } from '@/types';
+import { toast } from 'sonner';
 
 interface AuthContextType {
   user: SupabaseUser | null;
@@ -53,12 +54,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       .select('*')
       .eq('user_id', userId)
       .maybeSingle();
-    
+
     if (error) {
       console.error('Error fetching profile:', error);
       return null;
     }
-    
+
     return data as Profile | null;
   };
 
@@ -72,7 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const refreshSubscription = async () => {
     if (!session) return;
-    
+
     try {
       const { data, error } = await supabase.functions.invoke('check-subscription', {
         headers: {
@@ -102,38 +103,39 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
-      (event, newSession) => {
+      async (event, newSession) => {
         setSession(newSession);
         setUser(newSession?.user ?? null);
 
         if (newSession?.user) {
-          // Defer profile fetch and subscription check
-          setTimeout(async () => {
-            const profileData = await fetchProfile(newSession.user.id);
-            if (profileData) {
-              setProfile(profileData);
-            }
-            
-            // Check subscription
-            try {
-              const { data } = await supabase.functions.invoke('check-subscription', {
-                headers: {
-                  Authorization: `Bearer ${newSession.access_token}`,
-                },
-              });
-              if (data) {
-                setSubscription({
-                  subscribed: data.subscribed,
-                  plan: (data.plan || 'free') as SubscriptionPlan,
-                  scansPerMonth: data.scansPerMonth || 1,
-                  subscriptionEnd: data.subscriptionEnd,
-                  productId: data.productId,
-                });
-              }
-            } catch (err) {
-              console.error('Error checking subscription:', err);
-            }
-          }, 0);
+          // Check if this is a new signup
+          const { data: existingProfile } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('user_id', newSession.user.id)
+            .maybeSingle();
+
+          // AUTHORIZATION CHECK: Only for signups (no existing profile)
+          const AUTHORIZED_DOMAINS = ['redflag.ai', 'google.com']; // Example domains
+          const AUTHORIZED_EMAILS = ['tester@redflag.ai', 'jay@redflag.ai'];
+
+          const isDomainAuthorized = AUTHORIZED_DOMAINS.some(domain => newSession.user.email?.endsWith(`@${domain}`));
+          const isEmailAuthorized = AUTHORIZED_EMAILS.includes(newSession.user.email ?? '');
+
+          if (!existingProfile && !isDomainAuthorized && !isEmailAuthorized) {
+            // Not authorized - sign them back out immediately
+            await supabase.auth.signOut();
+            toast.error('Unauthorized', { description: 'Your email is not on the authorized signup list.' });
+            return;
+          }
+
+          // Proceed with profile fetch
+          const profileData = await fetchProfile(newSession.user.id);
+          if (profileData) {
+            setProfile(profileData);
+          }
+
+          refreshSubscription();
         } else {
           setProfile(null);
           setSubscription(defaultSubscription);
@@ -154,7 +156,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Refresh subscription periodically (every 60 seconds)
   useEffect(() => {
     if (!session) return;
-    
+
     const interval = setInterval(() => {
       refreshSubscription();
     }, 60000);
@@ -172,7 +174,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signup = async (email: string, password: string, name: string) => {
     const redirectUrl = `${window.location.origin}/`;
-    
+
     const { error } = await supabase.auth.signUp({
       email,
       password,

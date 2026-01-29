@@ -24,7 +24,11 @@ const Signup: React.FC = () => {
           {error && (
             <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</div>
           )}
-          
+
+          <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-amber-800 mb-2">
+            <strong>Note:</strong> Signup is currently limited to invited users and authorized domains (@redflag.ai).
+          </div>
+
           {/* Benefits list */}
           <div className="rounded-lg bg-muted/50 p-4 space-y-2">
             <div className="flex items-center gap-2 text-sm">
@@ -40,13 +44,13 @@ const Signup: React.FC = () => {
               <span>Unused scans roll over monthly</span>
             </div>
           </div>
-          
+
           <OAuthButtons onError={setError} />
-          
+
           <p className="text-center text-xs text-muted-foreground">
             By signing up, you agree to our <a href="#" className="underline hover:text-foreground">Terms</a> and <a href="#" className="underline hover:text-foreground">Privacy Policy</a>
           </p>
-          
+
           <div className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{' '}
             <Link to="/login" className="font-medium text-primary hover:underline">Sign in</Link>

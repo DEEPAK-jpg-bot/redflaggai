@@ -45,6 +45,24 @@ export const blogPosts = [
     featured: true,
   },
   {
+    slug: 'detecting-revenue-inflation',
+    title: 'How to Spot Revenue Inflation in Small Business Financials',
+    description: 'A forensic accountant\'s guide to identifying fictitious sales, early revenue recognition, and channel stuffing in acquisition targets.',
+    category: 'Forensics',
+    date: '2024-01-28',
+    readTime: '10 min read',
+    featured: true,
+  },
+  {
+    slug: 'search-fund-due-diligence-checklist',
+    title: 'The 10-Minute Red Flag Audit: A Search Funders Guide',
+    description: 'The exact checklist used by top search fund operators to screen deals in under 10 minutes before committing to a full LOI.',
+    category: 'Strategy',
+    date: '2024-01-25',
+    readTime: '6 min read',
+    featured: true,
+  },
+  {
     slug: 'customer-concentration-risk',
     title: 'Customer Concentration Risk: The Silent Deal Killer',
     description: 'How to identify and assess customer concentration in acquisition targets, and what thresholds should trigger deeper due diligence.',
@@ -79,7 +97,7 @@ const BlogIndex: React.FC = () => {
 
       <div className="min-h-screen bg-background">
         <Header />
-        
+
         <main className="container mx-auto px-4 py-16">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
@@ -141,8 +159,8 @@ const BlogIndex: React.FC = () => {
                             <p className="text-muted-foreground">{post.description}</p>
                           </Link>
                         </div>
-                        <Link 
-                          to={`/blog/${post.slug}`} 
+                        <Link
+                          to={`/blog/${post.slug}`}
                           className="mt-4 md:mt-0 md:ml-6 flex items-center text-primary hover:underline"
                         >
                           Read more <ArrowRight className="h-4 w-4 ml-1" />
@@ -158,13 +176,13 @@ const BlogIndex: React.FC = () => {
             <div className="mt-16 p-8 bg-primary/5 rounded-2xl text-center">
               <h2 className="text-2xl font-bold mb-4">Stay Updated</h2>
               <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-                Get the latest insights on M&A due diligence and search fund best practices 
+                Get the latest insights on M&A due diligence and search fund best practices
                 delivered to your inbox.
               </p>
               <div className="flex max-w-md mx-auto gap-3">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
+                <input
+                  type="email"
+                  placeholder="Enter your email"
                   className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
