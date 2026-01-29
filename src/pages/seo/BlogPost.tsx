@@ -75,7 +75,7 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
       <>
         <p className="lead text-xl text-muted-foreground mb-8">
           The math of traditional due diligence is broken. For small business acquisitions and
-          supplier onboarding, spending £15k-£25k on a Big 4 report *before* knowing the
+          supplier onboarding, spending £15k-£25k on a Big 4 report <em>before</em> knowing the
           basics is a strategic blunder.
         </p>
 
@@ -106,9 +106,9 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
 
         <h2>When to Use Which?</h2>
         <p>
-          AI-powered reports are your **Deal Filter**. They aren't meant to replace your
+          AI-powered reports are your <strong>Deal Filter</strong>. They aren't meant to replace your
           accounting firm during the final phase of a £50M acquisition. They are meant to
-          ensure that you don't *reach* that phase with a shell company or a fraudster.
+          ensure that you don't <em>reach</em> that phase with a shell company or a fraudster.
         </p>
 
         <p>
@@ -142,7 +142,7 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
             High Risk Pattern
           </h3>
           <p className="text-zinc-400 font-mono text-sm">
-            Registry: Seychelles -> Address: Hong Kong Mailbox -> Bank: Lithuania -> Client: UAE.
+            Registry: Seychelles → Address: Hong Kong Mailbox → Bank: Lithuania → Client: UAE.
             This "Cross-Border Triangle" is the standard setup for phantom suppliers.
           </p>
         </div>
@@ -166,7 +166,7 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
 
         <h2>The Bill of Lading Scam</h2>
         <p>
-          Scamers now bribe low-level port officials or hack logistics portals to generate
+          Scammers now bribe low-level port officials or hack logistics portals to generate
           legitimate-looking Bills of Lading (BL). To a manual checker, the document
           is real.
         </p>
@@ -191,13 +191,13 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
         <p className="lead text-xl text-muted-foreground mb-8">
           For search fund operators and private equity associates, time is the scarcest asset.
           The best in the business don't spend more time on good deals; they spend significantly
-          *less* time on bad ones.
+          <em>less</em> time on bad ones.
         </p>
 
         <h2>The "Kill Fast" Protocol</h2>
         <p>
           The Kill Fast strategy is a 48-hour Sprint. Within 48 hours of getting an IM or a Teaser,
-          you must find a reason to say "No." If you can't find one, *then* you move to the next stage.
+          you must find a reason to say "No." If you can't find one, <em>then</em> you move to the next stage.
         </p>
 
         <div className="bg-zinc-50 p-6 rounded-xl my-8 border border-zinc-200">
@@ -310,6 +310,28 @@ const BlogPost: React.FC = () => {
         <meta property="og:description" content={post.description} />
         <meta property="og:type" content="article" />
         <meta property="article:published_time" content={post.date} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.description,
+            datePublished: post.date,
+            author: {
+              '@type': 'Organization',
+              name: 'RedFlags AI',
+              url: 'https://redflag.ai'
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'RedFlags AI',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://redflag.ai/logo.png'
+              }
+            }
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -349,7 +371,7 @@ const BlogPost: React.FC = () => {
             </header>
 
             <div className="prose prose-zinc prose-lg max-w-none prose-headings:font-bold prose-a:text-primary">
-              {data.content}
+              {contentToDisplay}
             </div>
 
             <div className="mt-16 p-10 bg-zinc-900 text-white rounded-3xl relative overflow-hidden">
@@ -377,29 +399,6 @@ const BlogPost: React.FC = () => {
 
         <Footer />
       </div>
-
-      <script type="application/ld+json">
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'BlogPosting',
-          headline: post.title,
-          description: post.description,
-          datePublished: post.date,
-          author: {
-            '@type': 'Organization',
-            name: 'RedFlags AI',
-            url: 'https://redflag.ai'
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: 'RedFlags AI',
-            logo: {
-              '@type': 'ImageObject',
-              url: 'https://redflag.ai/logo.png'
-            }
-          }
-        })}
-      </script>
     </>
   );
 };
