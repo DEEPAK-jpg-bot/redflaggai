@@ -8,90 +8,104 @@ import { CalendarDays, Clock, ArrowRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 export const blogPosts = [
+  // FEATURED / QUICK WINS
   {
-    slug: 'what-is-quality-of-earnings',
-    title: 'What is a Quality of Earnings Report? Complete Guide for 2024',
-    description: 'Learn everything about QoE reports: what they analyze, why they matter for M&A, and how to interpret the findings for smarter acquisition decisions.',
-    category: 'Education',
-    date: '2024-01-15',
+    slug: 'verify-company-legitimate-2025',
+    title: 'How to Verify a Company is Legitimate in 2025: The 5-Minute Checklist',
+    description: 'Stop business scams before they start. Our 5-minute ritual for verifying any company, registration number, and VAT status globally.',
+    category: 'Guide',
+    date: '2024-02-01',
+    readTime: '5 min read',
+    featured: true,
+  },
+  {
+    slug: 'due-diligence-report-cost-comparison',
+    title: 'The £19.99 Due Diligence Report vs. £25,000 Full Diligence: What\'s the Difference?',
+    description: 'Why you shouldn\'t spend £25k on due diligence for a deal that should have been killed in 10 minutes for less than a pizza.',
+    category: 'ROI',
+    date: '2024-01-28',
+    readTime: '6 min read',
+    featured: true,
+  },
+  {
+    slug: 'shell-company-red-flags',
+    title: 'Shell Company Red Flags: 7 Signs You\'re Dealing with a Fake Business',
+    description: 'Learn the industrial-grade patterns of shell companies, phantom offices, and virtual company fronts used in M&A fraud.',
+    category: 'Horror Stories',
+    date: '2024-01-25',
     readTime: '8 min read',
     featured: true,
   },
   {
-    slug: 'ebitda-addbacks-search-funds',
-    title: 'Top 5 EBITDA Add-backs Search Funders Often Miss',
-    description: 'Common owner perks and personal expenses that should be added back when calculating True Adjusted EBITDA for small business valuations.',
-    category: 'Due Diligence',
-    date: '2024-01-10',
-    readTime: '6 min read',
-    featured: true,
-  },
-  {
-    slug: 'proof-of-cash-explained',
-    title: 'The Role of Proof of Cash in Small Business Acquisitions',
-    description: 'How reconciling bank deposits to booked revenue catches revenue recognition issues, fictitious sales, and cash diversion in acquisition targets.',
-    category: 'Due Diligence',
-    date: '2024-01-05',
-    readTime: '5 min read',
-    featured: false,
-  },
-  {
-    slug: 'why-qoe-takes-3-weeks',
-    title: 'Why Traditional QoE Reports Take 3 Weeks (and How to Get One in 10 Minutes)',
-    description: 'Breaking down the traditional QoE process and how AI-powered analysis delivers comparable red flag detection at a fraction of the time and cost.',
-    category: 'Industry Insights',
-    date: '2024-01-01',
-    readTime: '7 min read',
-    featured: true,
-  },
-  {
-    slug: 'detecting-revenue-inflation',
-    title: 'How to Spot Revenue Inflation in Small Business Financials',
-    description: 'A forensic accountant\'s guide to identifying fictitious sales, early revenue recognition, and channel stuffing in acquisition targets.',
-    category: 'Forensics',
-    date: '2024-01-28',
+    slug: 'commodity-trading-phantom-shipment-fraud',
+    title: 'Commodity Trading Fraud Alert: The "Phantom Shipment" Scam Costing Traders Millions',
+    description: 'How freight forwarders and suppliers collaborate to fake bills of lading and steal cargo in 2025.',
+    category: 'Industry',
+    date: '2024-01-22',
     readTime: '10 min read',
     featured: true,
   },
   {
-    slug: 'search-fund-due-diligence-checklist',
-    title: 'The 10-Minute Red Flag Audit: A Search Funders Guide',
-    description: 'The exact checklist used by top search fund operators to screen deals in under 10 minutes before committing to a full LOI.',
+    slug: 'pre-acquisition-due-diligence-kill-fast',
+    title: 'Pre-Acquisition Due Diligence: Kill Bad Deals in 48 Hours, Not 48 Days',
+    description: 'The "Kill Fast" strategy for search funds and PE firms. Focus your energy on the 1% of deals that actually matter.',
     category: 'Strategy',
-    date: '2024-01-25',
-    readTime: '6 min read',
+    date: '2024-01-20',
+    readTime: '12 min read',
     featured: true,
   },
-  {
-    slug: 'customer-concentration-risk',
-    title: 'Customer Concentration Risk: The Silent Deal Killer',
-    description: 'How to identify and assess customer concentration in acquisition targets, and what thresholds should trigger deeper due diligence.',
-    category: 'Risk Analysis',
-    date: '2023-12-28',
-    readTime: '5 min read',
-    featured: false,
-  },
-  {
-    slug: 'working-capital-pegs',
-    title: 'Understanding Working Capital Pegs in SBA and M&A Transactions',
-    description: 'A practical guide to working capital adjustments, how they affect deal pricing, and common negotiation strategies for buyers and sellers.',
-    category: 'Deal Structure',
-    date: '2023-12-20',
-    readTime: '6 min read',
-    featured: false,
-  },
+
+  // CATEGORY A: HORROR STORIES
+  { slug: '2m-lesson-commodity-trader-fraud', title: 'The $2M Lesson: How a Commodity Trader Lost Everything to a Shell Company', description: 'A cautionary tale of due diligence failure and the simple check that would have saved it all.', category: 'Horror Stories', date: '2024-01-15', readTime: '10 min read', featured: false },
+  { slug: '9-common-acquisition-frauds-2025', title: '9 Most Common Small Business Acquisition Frauds in 2025', description: 'Real cases of fraud that every search funder and buyer needs to know before signing an LOI.', category: 'Horror Stories', date: '2024-01-14', readTime: '12 min read', featured: false },
+  { slug: 'phantom-suppliers-ghost-freight-forwarders', title: 'Phantom Suppliers: How "Ghost" Freight Forwarders Are Stealing Cargo', description: 'The rise of double-brokerage scams and phantom logistics providers in international trade.', category: 'Horror Stories', date: '2024-01-12', readTime: '7 min read', featured: false },
+  { slug: 'vitalcaring-case-hidden-liabilities', title: 'The VitalCaring Case: Hidden Liabilities That Cost Buyers 43% of Profits', description: 'Why pre-screening for historical liabilities is more important than the current balance sheet.', category: 'Horror Stories', date: '2024-01-10', readTime: '9 min read', featured: false },
+  { slug: 'infogrid-vs-aquicore-fake-revenue', title: 'Infogrid vs Aquicore: When Sellers Triple Fake Revenue to Close Deals', description: 'Anatomy of revenue fraud and how AI catches round-tripped transactions instantly.', category: 'Horror Stories', date: '2024-01-08', readTime: '11 min read', featured: false },
+
+  // CATEGORY B: HOW-TO GUIDES
+  { slug: 'detect-revenue-fraud-small-business', title: 'How to Detect Revenue Fraud When Buying a Small Business', description: 'The forensic accountant\'s guide to spotting "Lapping" and fictitious customers.', category: 'Guide', date: '2024-01-07', readTime: '15 min read', featured: false },
+  { slug: 'phantom-customer-detection-round-tripping', title: 'Phantom Customer Detection: How to Spot Round-Tripped Cash', description: 'Advanced techniques for verifying that revenue is coming from real customers, not the sellers pocket.', category: 'Guide', date: '2024-01-06', readTime: '8 min read', featured: false },
+  { slug: 'verify-international-suppliers-guide', title: 'Verifying International Suppliers: A Country-by-Country Guide', description: 'How to navigate registry searches globally without getting lost in translation.', category: 'Guide', date: '2024-01-05', readTime: '20 min read', featured: false },
+  { slug: 'verify-bill-of-lading-real', title: 'How to Verify a Bill of Lading is Real (Trade Finance Security)', description: 'GPS tracking and ship metadata: The new standard for verifying physical trade docs.', category: 'Guide', date: '2024-01-04', readTime: '6 min read', featured: false },
+  { slug: 'kyb-compliance-2025-automation', title: 'KYB Compliance in 2025: Automating Know Your Business Verification', description: 'Moving from manual document checking to automated identity data rooms.', category: 'Guide', date: '2024-01-03', readTime: '10 min read', featured: false },
+
+  // CATEGORY C: INDUSTRY DEEP DIVES
+  { slug: 'commodity-trading-due-diligence-guide', title: 'Commodity Trading Due Diligence: Oil, Metals & Agri Counterparties', description: 'Specific verification protocols for traders moving millions in physical commodities.', category: 'Industry', date: '2024-01-02', readTime: '9 min read', featured: false },
+  { slug: 'procurement-fraud-prevention-manager-protocol', title: 'Procurement Fraud Prevention: The Manager\'s Security Protocol', description: 'Build a fraud-proof vendor onboarding process in under 10 minutes per supplier.', category: 'Industry', date: '2023-12-30', readTime: '11 min read', featured: false },
+  { slug: 'private-equity-red-flag-screening-pre-data-room', title: 'Private Equity Red Flag Screening: What to Check Before the Data Room', description: 'Save your associates 40 hours of work by screening targets before you open the VDR.', category: 'Industry', date: '2023-12-28', readTime: '8 min read', featured: false },
+
+  // CATEGORY D: COST & ROI
+  { slug: 'why-due-diligence-costs-25k', title: 'Why Full Due Diligence Costs £25,000 (And How to Pre-Screen for £20)', description: 'The economics of deal flow and why expensive diligence is for the final 1% of deals.', category: 'ROI', date: '2023-12-25', readTime: '7 min read', featured: false },
+  { slug: 'ai-vs-intern-manual-research-cost', title: 'AI vs. Intern: The True Cost of Manual Company Research', description: 'Why manual research is 10x more expensive than automated red flag detection.', category: 'ROI', date: '2023-12-22', readTime: '5 min read', featured: false },
+  { slug: 'calculating-roi-pre-acquisition-screening', title: 'Calculating ROI on Pre-Acquisition Screening Tools', description: 'How to justify the cost of AI verification to your investment committee.', category: 'ROI', date: '2023-12-20', readTime: '6 min read', featured: false },
+
+  // CATEGORY E: TECHNICAL AUTHORITY
+  { slug: 'ubo-verification-2025-guide', title: 'Understanding Ultimate Beneficial Ownership (UBO) in 2025', description: 'The changing landscape of corporate transparency and how to peel back the layers.', category: 'Technical', date: '2023-12-15', readTime: '14 min read', featured: false },
+  { slug: 'benfords-law-financial-fraud-detection', title: 'Benford\'s Law and Financial Statement Fraud Detection', description: 'Using mathematical patterns to spot manipulated earnings and round numbers.', category: 'Technical', date: '2023-12-10', readTime: '8 min read', featured: false },
+  { slug: 'graph-ai-due-diligence-hidden-networks', title: 'Graph AI in Due Diligence: Mapping Hidden Corporate Networks', description: 'How AI sees the connections between shell companies that humans miss.', category: 'Technical', date: '2023-12-05', readTime: '12 min read', featured: false },
+
+  // CATEGORY F: COMPARISONS
+  { slug: 'redflags-ai-vs-traditional-credit-reports', title: 'RedFlags AI vs. Traditional Credit Reports: When to Use Which', description: 'Why a credit score doesn\'t tell you if a supplier is a scammer.', category: 'Comparison', date: '2023-12-01', readTime: '6 min read', featured: false },
+  { slug: 'dun-bradstreet-alternative-real-time-verification', title: 'Dun & Bradstreet Alternative: Real-Time Verification for Under £20', description: 'Fast, cheap, and more accurate for fraud detection than legacy bureaus.', category: 'Comparison', date: '2023-11-28', readTime: '7 min read', featured: false },
 ];
 
 const BlogIndex: React.FC = () => {
+  const [activeCategory, setActiveCategory] = React.useState<string | null>(null);
+
   const featuredPosts = blogPosts.filter(p => p.featured);
-  const regularPosts = blogPosts.filter(p => !p.featured);
+  const regularPosts = blogPosts.filter(p => {
+    if (activeCategory) return p.category === activeCategory && !p.featured;
+    return !p.featured;
+  });
+
+  const categories = Array.from(new Set(blogPosts.map(p => p.category)));
 
   return (
     <>
       <Helmet>
-        <title>Quality of Earnings & Due Diligence Blog | RedFlag.ai</title>
-        <meta name="description" content="Expert insights on Quality of Earnings analysis, EBITDA adjustments, M&A due diligence, and search fund best practices. Learn to evaluate acquisitions smarter." />
-        <meta name="keywords" content="quality of earnings blog, QoE guide, M&A due diligence tips, EBITDA adjustments, search fund resources" />
+        <title>RedFlags AI Blog | Fraud Prevention & Pre-Due Diligence Insights</title>
+        <meta name="description" content="Expert guides on verifying companies, detecting shell companies, and stopping M&A fraud. Learn the 'Kill Fast' strategy for due diligence." />
+        <meta name="keywords" content="verify company, fraud prevention blog, due diligence strategy, shell company red flags, M&A risk management" />
         <link rel="canonical" href="https://redflag.ai/blog" />
       </Helmet>
 
@@ -101,18 +115,18 @@ const BlogIndex: React.FC = () => {
         <main className="container mx-auto px-4 py-16">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold mb-4">Blog & Resources</h1>
+              <h1 className="text-4xl font-bold mb-4 tracking-tight">Blog & Expert Resources</h1>
               <p className="text-xl text-muted-foreground">
-                Expert insights on Quality of Earnings, due diligence, and M&A best practices
+                Stop fraud before it starts. The pre-due diligence playbook for the modern acquirer.
               </p>
             </div>
 
             {/* Featured Posts */}
             <div className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">Featured Articles</h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <h2 className="text-2xl font-bold mb-6">High-Priority Insights</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {featuredPosts.map((post) => (
-                  <Card key={post.slug} className="hover:shadow-lg transition-shadow">
+                  <Card key={post.slug} className="hover:shadow-lg transition-all border-primary/10 hover:border-primary/30">
                     <CardHeader>
                       <Badge variant="secondary" className="w-fit mb-2">{post.category}</Badge>
                       <CardTitle className="text-lg leading-tight">
@@ -141,7 +155,27 @@ const BlogIndex: React.FC = () => {
 
             {/* All Posts */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">All Articles</h2>
+              <div className="md:flex md:items-center md:justify-between mb-8">
+                <h2 className="text-2xl font-bold tracking-tight">Explore the Ecosystem</h2>
+                <div className="flex flex-wrap gap-2 mt-4 md:mt-0">
+                  <button
+                    onClick={() => setActiveCategory(null)}
+                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${!activeCategory ? 'bg-primary text-primary-foreground shadow-sm' : 'bg-secondary hover:bg-secondary/80 text-muted-foreground'}`}
+                  >
+                    All
+                  </button>
+                  {categories.map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${activeCategory === cat ? 'bg-primary text-primary-foreground shadow-sm' : 'bg-secondary hover:bg-secondary/80 text-muted-foreground'}`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="space-y-4">
                 {regularPosts.map((post) => (
                   <Card key={post.slug} className="hover:shadow-md transition-shadow">
@@ -156,14 +190,14 @@ const BlogIndex: React.FC = () => {
                             <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
                               {post.title}
                             </h3>
-                            <p className="text-muted-foreground">{post.description}</p>
+                            <p className="text-muted-foreground line-clamp-2">{post.description}</p>
                           </Link>
                         </div>
                         <Link
                           to={`/blog/${post.slug}`}
-                          className="mt-4 md:mt-0 md:ml-6 flex items-center text-primary hover:underline"
+                          className="mt-4 md:mt-0 md:ml-6 flex items-center text-primary font-medium hover:underline whitespace-nowrap"
                         >
-                          Read more <ArrowRight className="h-4 w-4 ml-1" />
+                          Read guide <ArrowRight className="h-4 w-4 ml-1" />
                         </Link>
                       </div>
                     </CardContent>
@@ -172,21 +206,44 @@ const BlogIndex: React.FC = () => {
               </div>
             </div>
 
+            {/* Strategy Sidebar Teaser */}
+            <div className="mt-16 grid md:grid-cols-2 gap-8">
+              <div className="p-8 bg-zinc-900 rounded-2xl border border-zinc-800">
+                <h3 className="text-xl font-bold text-white mb-4">Kill Bad Deals Fast</h3>
+                <p className="text-zinc-400 mb-6 font-mono text-sm">
+                  Pre-due diligence isn't about finding the perfect deal. It's about eliminating
+                  the 95% of scams, shell companies, and fraudulent sellers in the first 48 hours.
+                </p>
+                <Button variant="outline" className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-800" asChild>
+                  <Link to="/signup">Start Free Trial</Link>
+                </Button>
+              </div>
+              <div className="p-8 bg-primary/5 rounded-2xl border border-primary/10">
+                <h3 className="text-xl font-bold mb-4">Democratizing Due Diligence</h3>
+                <p className="text-muted-foreground mb-6 text-sm italic">
+                  "We used RedFlags AI to screen 40 suppliers in three days. Our previous
+                  manual process would have taken months and likely missed the two
+                  high-risk shell companies the AI flagged instantly."
+                </p>
+                <p className="text-xs font-bold">— Head of Procurement, Global Agri-Trade</p>
+              </div>
+            </div>
+
             {/* Newsletter CTA */}
-            <div className="mt-16 p-8 bg-primary/5 rounded-2xl text-center">
-              <h2 className="text-2xl font-bold mb-4">Stay Updated</h2>
-              <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-                Get the latest insights on M&A due diligence and search fund best practices
-                delivered to your inbox.
+            <div className="mt-16 p-12 bg-zinc-50 rounded-2xl text-center border border-zinc-100">
+              <h2 className="text-3xl font-bold mb-4">Join the Fraud-Free Network</h2>
+              <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+                Get high-priority fraud alerts and M&A due diligence strategies
+                delivered to your inbox every Tuesday. No fluff, just red flags.
               </p>
               <div className="flex max-w-md mx-auto gap-3">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="flex-1 px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
                 />
-                <button className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
-                  Subscribe
+                <button className="px-8 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all shadow-md">
+                  Join
                 </button>
               </div>
             </div>

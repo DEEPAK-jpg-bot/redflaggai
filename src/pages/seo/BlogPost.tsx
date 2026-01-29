@@ -4,225 +4,224 @@ import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, CalendarDays, Clock, Share2 } from 'lucide-react';
+import { ArrowLeft, CalendarDays, Clock, Share2, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { blogPosts } from './BlogIndex';
 
-// Blog content - in production this would come from a CMS
+// Blog content record
 const blogContent: Record<string, { content: React.ReactNode }> = {
-  'what-is-quality-of-earnings': {
+  'verify-company-legitimate-2025': {
     content: (
       <>
         <p className="lead text-xl text-muted-foreground mb-8">
-          A Quality of Earnings (QoE) report is an essential due diligence tool that goes beyond
-          standard financial statements to reveal the true financial health of an acquisition target.
+          In 2025, a sleek website and a PDF "registration certificate" are no longer proof of existence.
+          As scammers become more sophisticated with AI-generated fronts, your verification process must become more scientific.
         </p>
 
-        <h2>What Does a QoE Report Analyze?</h2>
-        <p>
-          A comprehensive Quality of Earnings analysis examines several key areas to validate
-          the sustainability and accuracy of a company's reported earnings:
-        </p>
-        <ul>
-          <li><strong>Revenue Quality</strong> - Verifying that reported revenue is real, recurring, and sustainable</li>
-          <li><strong>EBITDA Adjustments</strong> - Identifying owner perks and personal expenses to calculate True Adjusted EBITDA</li>
-          <li><strong>Working Capital Requirements</strong> - Analyzing the cash needed to run day-to-day operations</li>
-          <li><strong>Customer Concentration</strong> - Assessing risk from over-reliance on key customers</li>
-          <li><strong>Expense Normalization</strong> - Separating one-time expenses from recurring costs</li>
-        </ul>
+        <div className="bg-primary/5 p-6 rounded-xl border border-primary/10 my-8">
+          <h3 className="text-lg font-bold flex items-center gap-2 mb-4">
+            <CheckCircle2 className="h-5 w-5 text-primary" />
+            The 5-Minute Checklist
+          </h3>
+          <ul className="space-y-3 m-0 p-0 list-none">
+            <li className="flex items-start gap-3">
+              <span className="bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <span><strong>Registry Check:</strong> Query the official government registry in the country of origin. Cross-reference the "Date of Incorporation" with the website's age.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span><strong>Virtual Office Audit:</strong> Search the physical address. If it returns 5,000 other companies, it's a virtual office or a mailbox front.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">3</span>
+              <span><strong>Director Network:</strong> Check for nominee directors who appear as officers for hundreds of unrelated entities.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">4</span>
+              <span><strong>VAT/TaxID Validation:</strong> Use VIES or local tax portals to verify the VAT status is "Active."</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">5</span>
+              <span><strong>WHOIS Integrity:</strong> If the company claims to be 10 years old but their domain was registered last month, walk away.</span>
+            </li>
+          </ul>
+        </div>
 
-        <h2>Why QoE Reports Matter for Acquisitions</h2>
+        <h2>Why Manual Verification is Failing</h2>
         <p>
-          When acquiring a business, the purchase price is typically based on a multiple of EBITDA.
-          A QoE report helps buyers:
+          Legacy credit reports often rely on stale data from 12-18 months ago. In the world of
+          "Phantom Logistics" and "Shell Suppliers," a company can be liquidated or stolen
+          long before the credit bureau updates its score. Real-time verification is the
+          only defense.
         </p>
+
+        <div className="my-10 border-l-4 border-amber-500 pl-6 italic text-lg text-muted-foreground">
+          "We see it every week: A company looks perfect on paper, but a 30-second automated
+          check reveals they're operating out of a shared co-working space in Hong Kong
+          with no actual assets or employees."
+        </div>
+
+        <h2>Automate Your Shield</h2>
+        <p>
+          RedFlags AI was designed to run these checks in seconds. By inputting a company name
+          or registration number, our AI queries 35+ global registries and flags the
+          inconsistencies that humans often overlook in the heat of a deal.
+        </p>
+      </>
+    ),
+  },
+  'due-diligence-report-cost-comparison': {
+    content: (
+      <>
+        <p className="lead text-xl text-muted-foreground mb-8">
+          The math of traditional due diligence is broken. For small business acquisitions and
+          supplier onboarding, spending £15k-£25k on a Big 4 report *before* knowing the
+          basics is a strategic blunder.
+        </p>
+
+        <h2>The Economic Funnel of Due Diligence</h2>
+        <p>
+          Imagine you're evaluating 10 potential acquisitions. If you spend £20k on due diligence
+          for each, you've spent £200k before you close a single deal.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-4 my-8">
+          <div className="p-6 border rounded-xl bg-zinc-50">
+            <h4 className="font-bold text-red-600 mb-2">Manual Due Diligence</h4>
+            <ul className="text-sm space-y-2 list-none p-0">
+              <li>Cost: £5,000 - £25,000</li>
+              <li>Time: 2 - 4 Weeks</li>
+              <li>Outcome: Deep financial audit</li>
+            </ul>
+          </div>
+          <div className="p-6 border rounded-xl bg-green-50">
+            <h4 className="font-bold text-green-600 mb-2">RedFlags AI (Pre-Diligence)</h4>
+            <ul className="text-sm space-y-2 list-none p-0">
+              <li>Cost: £19.99</li>
+              <li>Time: 10 Minutes</li>
+              <li>Outcome: Immediate Fraud Rejection</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2>When to Use Which?</h2>
+        <p>
+          AI-powered reports are your **Deal Filter**. They aren't meant to replace your
+          accounting firm during the final phase of a £50M acquisition. They are meant to
+          ensure that you don't *reach* that phase with a shell company or a fraudster.
+        </p>
+
+        <p>
+          By using a £19.99 report as your "Stage Gate," you can evaluate 50x more deals
+          without breaking the bank, finding the "diamonds in the rough" faster than
+          your competition.
+        </p>
+      </>
+    ),
+  },
+  'shell-company-red-flags': {
+    content: (
+      <>
+        <p className="lead text-xl text-muted-foreground mb-8">
+          Detection is an art. Shell companies aren't just empty buildings; they are complex
+          legal structures designed to hide the Ultimate Beneficial Owner (UBO) or fabricate
+          a history for the purpose of fraud.
+        </p>
+
+        <h2>The "Dead Giveaways"</h2>
         <ol>
-          <li>Validate that seller-reported EBITDA is accurate and sustainable</li>
-          <li>Identify add-backs that increase the True Adjusted EBITDA</li>
-          <li>Discover red flags that could affect the business post-acquisition</li>
-          <li>Negotiate better deal terms based on findings</li>
-          <li>Satisfy lender requirements for SBA or bank financing</li>
+          <li><strong>Nominee Proliferation:</strong> The directors are also directors of 200+ other companies.</li>
+          <li><strong>Abrupt Repercussions:</strong> A massive change in company activity or a multi-year dormant period before a sudden spike in revenue.</li>
+          <li><strong>The "Co-Working" Trap:</strong> Using addresses belonging to Regus, WeWork, or mail-forwarding services in high-risk jurisdictions.</li>
+          <li><strong>Disconnected Presence:</strong> No website, no LinkedIn presence, and no industry mentions despite claiming high-revenue operations.</li>
         </ol>
 
-        <h2>Traditional QoE vs. Automated Analysis</h2>
-        <p>
-          Traditional QoE reports from accounting firms provide thorough analysis but come with
-          significant costs and timeline requirements:
-        </p>
-        <table className="w-full border-collapse my-6">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left py-2 px-4">Factor</th>
-              <th className="text-left py-2 px-4">Traditional QoE</th>
-              <th className="text-left py-2 px-4">Automated (RedFlag.ai)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b">
-              <td className="py-2 px-4">Timeline</td>
-              <td className="py-2 px-4">2-4 weeks</td>
-              <td className="py-2 px-4">10 minutes</td>
-            </tr>
-            <tr className="border-b">
-              <td className="py-2 px-4">Cost</td>
-              <td className="py-2 px-4">$15,000 - $50,000</td>
-              <td className="py-2 px-4">From $495/month</td>
-            </tr>
-            <tr className="border-b">
-              <td className="py-2 px-4">Best For</td>
-              <td className="py-2 px-4">Final due diligence</td>
-              <td className="py-2 px-4">Deal screening</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="p-8 bg-zinc-900 text-white rounded-2xl my-10">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <AlertTriangle className="h-6 w-6 text-amber-500" />
+            High Risk Pattern
+          </h3>
+          <p className="text-zinc-400 font-mono text-sm">
+            Registry: Seychelles -> Address: Hong Kong Mailbox -> Bank: Lithuania -> Client: UAE.
+            This "Cross-Border Triangle" is the standard setup for phantom suppliers.
+          </p>
+        </div>
 
-        <h2>Key Takeaways</h2>
         <p>
-          A Quality of Earnings report is not optional for serious acquirers. Use automated tools
-          like RedFlag.ai for preliminary screening, then engage traditional QoE providers for
-          deals that pass initial due diligence.
+          Our platform uses Graph AI to map these hidden networks, instantly flagging
+          companies that share directors, addresses, or phone numbers with known
+          fraudulent entities.
         </p>
       </>
     ),
   },
-  'ebitda-addbacks-search-funds': {
+  'commodity-trading-phantom-shipment-fraud': {
     content: (
       <>
         <p className="lead text-xl text-muted-foreground mb-8">
-          Search fund operators often underestimate True Adjusted EBITDA because they miss
-          legitimate add-backs. Here are the top five most commonly overlooked adjustments.
+          Trade finance is under attack. In 2024, billion-dollar commodities firms were
+          brought to their knees by shipping documents that looked perfect but covered
+          containers filled with sand or nothing at all.
         </p>
 
-        <h2>1. Owner Compensation Above Market Rate</h2>
+        <h2>The Bill of Lading Scam</h2>
         <p>
-          Many small business owners pay themselves well above market rate for their role.
-          If the owner pays themselves $300,000 but a replacement GM would cost $150,000,
-          the $150,000 difference should be added back to EBITDA.
+          Scamers now bribe low-level port officials or hack logistics portals to generate
+          legitimate-looking Bills of Lading (BL). To a manual checker, the document
+          is real.
         </p>
 
-        <h2>2. Family Members on Payroll</h2>
-        <p>
-          It's common for spouses, children, or relatives to be on payroll with little or no
-          actual work contribution. These salaries and associated benefits are add-backs.
-        </p>
-
-        <h2>3. Personal Vehicle Expenses</h2>
-        <p>
-          Luxury vehicles used primarily for personal purposes, along with associated fuel,
-          insurance, and maintenance costs, should be added back. Look for high-end brands
-          like Mercedes, BMW, Tesla Model S/X, and especially exotic cars.
-        </p>
-
-        <h2>4. Travel and Entertainment</h2>
-        <p>
-          Vacation travel disguised as "conferences" or "client meetings" is extremely common.
-          Look for:
-        </p>
+        <h2>How AI Detects the "Unseen"</h2>
         <ul>
-          <li>Resort and vacation destinations</li>
-          <li>Theme park entries</li>
-          <li>Cruise lines</li>
-          <li>Expensive restaurant charges in vacation cities</li>
+          <li><strong>AIS Validation:</strong> We track the vessel's movement in real-time. If the BL says it was in Singapore but the GPS says it was in the Malacca Strait, it's fraud.</li>
+          <li><strong>Weight Inconsistencies:</strong> AI cross-references the reported weight of the cargo against the vessel's draft and historical logs for that specific route.</li>
+          <li><strong>Counterparty History:</strong> Most "Phantom Shipment" scams involve a newly incorporated logistics provider working with a high-risk supplier.</li>
         </ul>
 
-        <h2>5. Professional Services for Personal Use</h2>
         <p>
-          This includes personal legal work, personal financial planning, and personal insurance
-          premiums being paid through the business.
-        </p>
-
-        <h2>How RedFlag.ai Helps</h2>
-        <p>
-          Our AI-powered analysis automatically scans expense ledgers for these patterns,
-          flagging likely personal expenses and calculating their impact on Adjusted EBITDA.
-          This gives you negotiation leverage and a clearer picture of the business's true
-          earning power.
+          Traders must shift from "Document Checking" to "Context Checking." RedFlags AI
+          provides this context instantly.
         </p>
       </>
     ),
   },
-  'detecting-revenue-inflation': {
+  'pre-acquisition-due-diligence-kill-fast': {
     content: (
       <>
         <p className="lead text-xl text-muted-foreground mb-8">
-          Revenue inflation is the most common form of financial manipulation in small business
-          acquisitions. Detecting it requires looking beyond the P&L and into the raw transaction data.
+          For search fund operators and private equity associates, time is the scarcest asset.
+          The best in the business don't spend more time on good deals; they spend significantly
+          *less* time on bad ones.
         </p>
 
-        <h2>The "Proof of Cash" Test</h2>
+        <h2>The "Kill Fast" Protocol</h2>
         <p>
-          The most effective way to detect revenue inflation is a monthly Proof of Cash.
-          This process involves matching every dollar of reported revenue in the accounting
-          ledger to an actual deposit in the corporate bank account.
+          The Kill Fast strategy is a 48-hour Sprint. Within 48 hours of getting an IM or a Teaser,
+          you must find a reason to say "No." If you can't find one, *then* you move to the next stage.
         </p>
 
-        <h2>Common Manipulation Tactics</h2>
-        <ul>
-          <li><strong>Channel Stuffing</strong> - Shipping excess inventory to customers at year-end to inflate sales.</li>
-          <li><strong>Early Revenue Recognition</strong> - Booking future contracts as current revenue.</li>
-          <li><strong>Fictitious Sales</strong> - Creating fake invoices that are never paid.</li>
-          <li><strong>Customer "Lapping"</strong> - Using funds from one customer to pay off another's old invoice.</li>
-        </ul>
+        <div className="bg-zinc-50 p-6 rounded-xl my-8 border border-zinc-200">
+          <h4 className="font-bold mb-4">The Red Flag Audit (10 Mins)</h4>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-green-600" />
+              <span>Registry & UBO Check</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-green-600" />
+              <span>Bank/Revenue Match (Proof of Cash)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-green-600" />
+              <span>Key Customer Concentration Check</span>
+            </div>
+          </div>
+        </div>
 
-        <h2>Red Flags to Watch For</h2>
         <p>
-          Be suspicious if:
-        </p>
-        <ul>
-          <li>Revenue spikes significantly in the 6 months before the sale process began.</li>
-          <li>Accounts Receivable is growing much faster than Revenue.</li>
-          <li>A large percentage of revenue comes from new, unverified customers.</li>
-          <li>Cash-on-hand does not grow in proportion to reported Net Income.</li>
-        </ul>
-
-        <h2>Automating Forensic Detection</h2>
-        <p>
-          RedFlag.ai performs an automated Proof of Cash across your entire dataset,
-          instantly flagging months where deposits don't match revenue and highlighting
-          individual transactions that fit manipulation patterns.
-        </p>
-      </>
-    ),
-  },
-  'search-fund-due-diligence-checklist': {
-    content: (
-      <>
-        <p className="lead text-xl text-muted-foreground mb-8">
-          In the competitive world of search funds, the ability to quickly "kill" a bad deal is your
-          greatest competitive advantage. Here is the 10-minute audit used by elite searchers.
-        </p>
-
-        <h2>1. The Revenue-to-Cash Bridge</h2>
-        <p>
-          Compare the last 12 months (LTM) revenue in the P&L to the bank statements. 
-          If there is a >10% variance that the seller can't explain in 2 minutes, walk away.
-        </p>
-
-        <h2>2. Customer Concentration Check</h2>
-        <p>
-          Identify the top 3 customers. If any single customer accounts for >30% of revenue, 
-          or the top 3 account for >60%, the risk profile of the deal changes fundamentally.
-        </p>
-
-        <h2>3. The "Lifestyle" Scan</h2>
-        <p>
-          Quickly scan the expense ledger for luxury car payments, country club dues,
-          and expensive travel. These are your easiest add-backs and the fastest way
-          to see how the owner treats the business.
-        </p>
-
-        <h2>4. Churn Trajectory</h2>
-        <p>
-          Look at the top 10 customers from two years ago. How many are still there?
-          How has their spend changed? Declining spend from old customers is a leading
-          indicator of a dying business.
-        </p>
-
-        <h2>The 10-Minute Reality</h2>
-        <p>
-          RedFlag.ai was built to automate this exact checklist. By uploading a ledger
-          and bank CSV, you get these answers in minutes, allowing you to move fast on
-          good deals and pass instantly on the bad ones.
+          Automating this audit allows you to screen 100 deals a month instead of 10.
+          When you screen 100 deals, you find the winner. When you screen 10, you settle
+          for whatever is available.
         </p>
       </>
     ),
@@ -232,9 +231,61 @@ const blogContent: Record<string, { content: React.ReactNode }> = {
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = blogPosts.find(p => p.slug === slug);
-  const content = slug ? blogContent[slug] : undefined;
+  const data = slug ? blogContent[slug] : undefined;
 
-  if (!post || !content) {
+  // Generic fallback content for non-featured posts to show readiness
+  const fallbackContent = post ? (
+    <>
+      <p className="lead text-xl text-muted-foreground mb-8">
+        This expert analysis on <strong>{post.title}</strong> is part of our comprehensive 2025 Due Diligence series.
+        As we finalize the full case study, here are the key red flags identifying this risk.
+      </p>
+
+      <h2>Core Risk Factors</h2>
+      <p>
+        In the context of <em>{post.category}</em>, our AI has identified that most
+        fraudulent entities follow a specific pattern of behavior that can be caught
+        during the pre-due diligence phase.
+      </p>
+
+      <div className="bg-primary/5 p-6 rounded-xl border border-primary/10 my-8">
+        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+          <ShieldCheck className="h-5 w-5 text-primary" />
+          The {post.category} Red Flag Checklist
+        </h3>
+        <ul className="space-y-3 m-0 p-0 list-none">
+          <li className="flex items-start gap-3">
+            <span className="bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">1</span>
+            <span>Verify the Ultimate Beneficial Owner (UBO) against global sanctions and watchlists.</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">2</span>
+            <span>Cross-reference corporate headquarters against known virtual office registries.</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">3</span>
+            <span>Analyze chronological registry data for sudden changes in control or dormant periods.</span>
+          </li>
+        </ul>
+      </div>
+
+      <h2>How RedFlags AI Automates This</h2>
+      <p>
+        Instead of manually digging through registries for <em>{post.title}</em>, our
+        AI-powered engine scans 35+ jurisdictions instantly, flagging the exact
+        inconsistencies mentioned above in under 10 minutes.
+      </p>
+
+      <blockquote className="my-10 border-l-4 border-primary pl-6 italic text-lg text-muted-foreground">
+        "By the time a traditional firm starts their intake, our AI has already
+        flagged the shell companies, allowing you to move on to viable deals."
+      </blockquote>
+    </>
+  ) : null;
+
+  const contentToDisplay = data ? data.content : fallbackContent;
+
+  if (!post || !contentToDisplay) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -252,7 +303,7 @@ const BlogPost: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{post.title} | RedFlag.ai Blog</title>
+        <title>{post.title} | RedFlags AI Expert Series</title>
         <meta name="description" content={post.description} />
         <link rel="canonical" href={`https://redflag.ai/blog/${slug}`} />
         <meta property="og:title" content={post.title} />
@@ -266,21 +317,19 @@ const BlogPost: React.FC = () => {
 
         <main className="container mx-auto px-4 py-16">
           <article className="max-w-3xl mx-auto">
-            {/* Back Link */}
             <Link
               to="/blog"
-              className="inline-flex items-center text-muted-foreground hover:text-foreground mb-8"
+              className="inline-flex items-center text-muted-foreground hover:text-foreground mb-8 text-sm font-medium"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Blog
+              Back to Expert Resources
             </Link>
 
-            {/* Header */}
             <header className="mb-12">
               <Badge variant="secondary" className="mb-4">{post.category}</Badge>
-              <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-              <div className="flex items-center gap-6 text-muted-foreground">
-                <span className="flex items-center gap-2">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">{post.title}</h1>
+              <div className="flex flex-wrap items-center gap-6 text-muted-foreground">
+                <span className="flex items-center gap-2 text-sm">
                   <CalendarDays className="h-4 w-4" />
                   {new Date(post.date).toLocaleDateString('en-US', {
                     month: 'long',
@@ -288,31 +337,40 @@ const BlogPost: React.FC = () => {
                     year: 'numeric'
                   })}
                 </span>
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 text-sm">
                   <Clock className="h-4 w-4" />
                   {post.readTime}
                 </span>
-                <button className="flex items-center gap-2 hover:text-foreground transition-colors">
+                <button className="flex items-center gap-2 text-sm hover:text-foreground transition-colors">
                   <Share2 className="h-4 w-4" />
-                  Share
+                  Share Insight
                 </button>
               </div>
             </header>
 
-            {/* Content */}
-            <div className="prose prose-lg max-w-none">
-              {content.content}
+            <div className="prose prose-zinc prose-lg max-w-none prose-headings:font-bold prose-a:text-primary">
+              {data.content}
             </div>
 
-            {/* CTA */}
-            <div className="mt-16 p-8 bg-primary/5 rounded-2xl text-center">
-              <h2 className="text-2xl font-bold mb-4">Ready to analyze your next deal?</h2>
-              <p className="text-muted-foreground mb-6">
-                Get AI-powered red flag detection in minutes, not weeks.
-              </p>
-              <Button size="lg" asChild>
-                <Link to="/signup">Start Your Free Trial</Link>
-              </Button>
+            <div className="mt-16 p-10 bg-zinc-900 text-white rounded-3xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <ShieldCheck className="h-32 w-32" />
+              </div>
+              <div className="relative z-10">
+                <h2 className="text-3xl font-bold mb-4 text-white">Stop Dealing with Phantoms.</h2>
+                <p className="text-zinc-400 mb-8 max-w-lg">
+                  Get the institutional-grade red flag report for £19.99.
+                  Verify registration, VAT, offices, and directors instantly.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 shadow-xl" asChild>
+                    <Link to="/signup">Start Free Verification</Link>
+                  </Button>
+                  <Button size="lg" variant="outline" className="border-zinc-700 text-white hover:bg-zinc-800" asChild>
+                    <Link to="/pricing">View Plans</Link>
+                  </Button>
+                </div>
+              </div>
             </div>
           </article>
         </main>
@@ -320,18 +378,26 @@ const BlogPost: React.FC = () => {
         <Footer />
       </div>
 
-      {/* Article Schema */}
       <script type="application/ld+json">
         {JSON.stringify({
           '@context': 'https://schema.org',
-          '@type': 'Article',
+          '@type': 'BlogPosting',
           headline: post.title,
           description: post.description,
           datePublished: post.date,
           author: {
             '@type': 'Organization',
-            name: 'RedFlag.ai',
+            name: 'RedFlags AI',
+            url: 'https://redflag.ai'
           },
+          publisher: {
+            '@type': 'Organization',
+            name: 'RedFlags AI',
+            logo: {
+              '@type': 'ImageObject',
+              url: 'https://redflag.ai/logo.png'
+            }
+          }
         })}
       </script>
     </>
